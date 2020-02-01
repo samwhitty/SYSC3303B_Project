@@ -3,46 +3,55 @@
  */
 package iteration1;
 
+import util.ButtonDataStruct;
+
 /**
  * @author Samuel Whitty
  * 
  */
 public class Scheduler extends Thread {
+	private ButtonDataStruct data = null;
+	private ElevatorSubsystem elevator = null;
+	private FloorSubsystem floor = null;
 	
 	/**
 	 * Constructor for the scheduler.
 	 */
-	public Scheduler() {
+	public Scheduler(ButtonDataStruct data, ElevatorSubsystem elev, FloorSubsystem floor) {
+		this.data = data;
+		this.elevator = elev;
+		this.floor  = floor;
 		System.out.println("Need to implement \"Scheduler()\"");
 	}
 	
 	/**
 	 * This method reads data from the data object.
 	 */
-	public void readData() {
+	public synchronized void readData() {
 		System.out.println("Need to implement \"readData()\"");
 	}
 	
 	/**
 	 * This method sends data to the elevator subsystem.
 	 */
-	public void sendDataToElevator() {
+	public synchronized void sendDataToElevator() {
 		System.out.println("Need to implement \"sendDataToElevator()\".");
 	}
 	
 	/**
 	 * This method sends data to the floor subsystem.
 	 */
-	public void sendDataToFloor() {
+	public synchronized void sendDataToFloor() {
 		System.out.println("Need to implement \"sendDataToFloor()\".");
 	}
 	
 	/**
-	 * @param args
+	 * Runs the scheduler.
+	 * @return 
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
+	@Override
+	public void run(){
+
 	}
 
 }
