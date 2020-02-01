@@ -2,13 +2,17 @@
  * 
  */
 package iteration1;
-
+import java.io.*;
+import java.math.*;
+import java.net.*;
 /**
  * @author Samuel Whitty
+ * @author Said Omar
  *
  */
-public class ElevatorSubsystem {
-
+public class elevatorSubsystem {
+	DatagramPacket sendPacket, receivePacket;
+        DatagramSocket sendSocket, receiveSocket;
 	/**
 	 * @param args
 	 */
