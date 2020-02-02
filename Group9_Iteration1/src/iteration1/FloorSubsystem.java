@@ -76,7 +76,7 @@ public class FloorSubsystem implements Runnable {
 		try {
 			data = receive_queue.take();
 			System.out.println("Data Received:");
-			System.out.println(data.toString(););
+			System.out.println(data.toString());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
