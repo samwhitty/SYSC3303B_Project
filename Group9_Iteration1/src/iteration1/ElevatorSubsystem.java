@@ -28,6 +28,10 @@ public class ElevatorSubsystem {
 	}
 	
 	
+	
+	
+	//ignore for now, or forever
+	/*
 	public String validatePacket(byte[] data){
 		//checking if input data is valid since all byte values are less than 127
 		for(int s = 1; s<data.length;s++){
@@ -77,7 +81,7 @@ public class ElevatorSubsystem {
 		
 		
 
-	}
+	}\*
 }
 		
 		
