@@ -66,7 +66,7 @@ public class FloorSubsystem implements Runnable {
 		s.close();
 	}
 	
-	public void sendRequest(Request request) {
-		
+	public void sendRequest(Request request) throws InterruptedException {
+		queue.put(request);
 	}
 }
