@@ -14,18 +14,15 @@ import util.Request;
  * @author Samuel Whitty & Said Omar & Everett Soldaat
  *
  */
-public class ElevatorSubsystem {
+public class ElevatorSubsystem implements Runnable{
 	
-	private BlockingQueue<Request> queue;
-	public ElevatorSubsystem(BlockingQueue<Request> q) {
-		this.queue = q;
+	private BlockingQueue<Request> einqueue;
+	private BlockingQueue<Request> eoutqueue;
+	public ElevatorSubsystem(BlockingQueue<Request> in, BlockingQueue<Request> out) {
+		this.einqueue = in;
+		this.eoutqueue = out;
 	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// Gonna get to this tomorrow.
-	}
-	
+
 	public void openDoors(){
 		//Ask TA for elevator door logic
 	}
@@ -35,9 +32,16 @@ public class ElevatorSubsystem {
 	
 	
 	public void sendRequest(Request request) throws InterruptedException {
-		queue.put(request);
+		einqueue.put(request);
 	}
-	
+
+	@Override
+	public void run() {
+		while(!einqueue.isEmpty()) {
+			einqueue.drainTo(eoutqueue);
+		}
+		
+	}
 
 }	
 		

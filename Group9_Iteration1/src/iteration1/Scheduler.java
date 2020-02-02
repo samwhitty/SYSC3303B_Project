@@ -16,15 +16,19 @@ public class Scheduler extends Thread {
 	private ButtonDataStruct data = null;
 	private ElevatorSubsystem elevator = null;
 	private FloorSubsystem floor = null;
-	private BlockingQueue eQueue = null;
-	private BlockingQueue fQueue = null;
+	private BlockingQueue einQueue = null;
+	private BlockingQueue eoutQueue = null;
+	private BlockingQueue finQueue = null;
+	private BlockingQueue foutQueue = null;
 	
 	/**
 	 * Constructor for the scheduler.
 	 */
-	public Scheduler(BlockingQueue eQueue, BlockingQueue fQueue, ButtonDataStruct data, ElevatorSubsystem elev, FloorSubsystem floor) {
-		this.eQueue = eQueue;
-		this.fQueue = fQueue;
+	public Scheduler(BlockingQueue einQueue,BlockingQueue eoutQueue, BlockingQueue foutQueue, BlockingQueue finQueue, ButtonDataStruct data, ElevatorSubsystem elev, FloorSubsystem floor) {
+		this.einQueue = einQueue;
+		this.eoutQueue= eoutQueue;
+		this.finQueue = finQueue;
+		this.foutQueue = foutQueue;
 		this.data = data;
 		this.elevator = elev;
 		this.floor  = floor;
@@ -35,7 +39,7 @@ public class Scheduler extends Thread {
 	 * This method sends data to the elevator subsystem.
 	 */
 	public synchronized void sendDataToElevator() {
-		fQueue.drainTo(eQueue);
+		foutQueue.drainTo(einQueue);
 		System.out.println("Need to implement \"sendDataToElevator()\".");
 	}
 	
@@ -43,7 +47,7 @@ public class Scheduler extends Thread {
 	 * This method sends data to the floor subsystem.
 	 */
 	public synchronized void sendDataToFloor() {
-		eQueue.drainTo(fQueue);
+		eoutQueue.drainTo(finQueue);
 		System.out.println("Need to implement \"sendDataToFloor()\".");
 	}
 	
