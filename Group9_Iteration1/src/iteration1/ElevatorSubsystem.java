@@ -28,7 +28,9 @@ public class ElevatorSubsystem {
 	}
 	
 	
-	
+	public void sendRequest(Request request) throws InterruptedException {
+		queue.put(request);
+	}
 	
 	//ignore for now, or forever
 	/*
