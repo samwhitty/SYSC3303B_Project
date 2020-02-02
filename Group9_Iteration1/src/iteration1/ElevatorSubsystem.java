@@ -6,8 +6,7 @@ import java.io.*;
 import java.math.*;
 import java.net.*;
 /**
- * @author Samuel Whitty
- * @author Said Omar
+ * @author Samuel Whitty & Said Omar & Everett Soldaat
  *
  */
 public class ElevatorSubsystem {

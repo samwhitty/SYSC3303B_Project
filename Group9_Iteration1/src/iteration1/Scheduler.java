@@ -16,11 +16,15 @@ public class Scheduler extends Thread {
 	private ButtonDataStruct data = null;
 	private ElevatorSubsystem elevator = null;
 	private FloorSubsystem floor = null;
+	private BlockingQueue eQueue = null;
+	private BlockingQueue fQueue = null;
 	
 	/**
 	 * Constructor for the scheduler.
 	 */
-	public Scheduler(ButtonDataStruct data, ElevatorSubsystem elev, FloorSubsystem floor) {
+	public Scheduler(BlockingQueue eQueue, BlockingQueue fQueue, ButtonDataStruct data, ElevatorSubsystem elev, FloorSubsystem floor) {
+		this.eQueue = eQueue;
+		this.fQueue = fQueue;
 		this.data = data;
 		this.elevator = elev;
 		this.floor  = floor;
@@ -28,16 +32,10 @@ public class Scheduler extends Thread {
 	}
 	
 	/**
-	 * This method reads data from the data object.
-	 */
-	public synchronized void readData() {
-		System.out.println("Need to implement \"readData()\"");
-	}
-	
-	/**
 	 * This method sends data to the elevator subsystem.
 	 */
 	public synchronized void sendDataToElevator() {
+		fQueue.drainTo(eQueue);
 		System.out.println("Need to implement \"sendDataToElevator()\".");
 	}
 	
@@ -45,6 +43,7 @@ public class Scheduler extends Thread {
 	 * This method sends data to the floor subsystem.
 	 */
 	public synchronized void sendDataToFloor() {
+		eQueue.drainTo(fQueue);
 		System.out.println("Need to implement \"sendDataToFloor()\".");
 	}
 	
@@ -53,7 +52,14 @@ public class Scheduler extends Thread {
 	 */
 	@Override
 	public void run(){
-
+		
+	}
+	
+	/**
+	 * Main Method.
+	 */
+	public static void main() {
+		
 	}
 
 }
