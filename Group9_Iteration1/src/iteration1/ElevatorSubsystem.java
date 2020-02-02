@@ -46,6 +46,39 @@ public class ElevatorSubsystem {
 		}
 			
 		
-	
+	public void exchangeData(){
+		//Make a DatagramPacket for receiving oackets
+		
+		
+		
+		
+		
+		//Receive the data from the sxheduler to control the motor and the doors
+		
+		
+		
+		
+		
+		//try catch for waiting until a diagram packet is received from the socket
+		
+		
+		
+		
+		
+		
+		
+		// process the received datagram packet
+		
+		
+		
+		
+		//make a string assuming we use an array for the values?
+		
+		
+		
+		
 
+	}
 }
+		
+		
