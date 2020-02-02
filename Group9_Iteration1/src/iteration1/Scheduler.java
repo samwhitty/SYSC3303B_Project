@@ -24,7 +24,7 @@ public class Scheduler extends Thread {
 	/**
 	 * Constructor for the scheduler.
 	 */
-	public Scheduler(BlockingQueue einQueue,BlockingQueue eoutQueue, BlockingQueue foutQueue, BlockingQueue finQueue, ButtonDataStruct data, ElevatorSubsystem elev, FloorSubsystem floor) {
+	public Scheduler(BlockingQueue einQueue,BlockingQueue eoutQueue, BlockingQueue foutQueue, BlockingQueue finQueue, ElevatorSubsystem elev, FloorSubsystem floor) {
 		this.einQueue = einQueue;
 		this.eoutQueue= eoutQueue;
 		this.finQueue = finQueue;
