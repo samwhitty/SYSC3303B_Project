@@ -3,6 +3,7 @@
  */
 package iteration1;
 
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import util.ButtonDataStruct;
@@ -24,17 +25,17 @@ public class Scheduler extends Thread {
 	/**
 	 * Constructor for the scheduler.
 	 */
-	public Scheduler(BlockingQueue einQueue,BlockingQueue eoutQueue, BlockingQueue foutQueue, BlockingQueue finQueue, ButtonDataStruct data, ElevatorSubsystem elev, FloorSubsystem floor) {
+	public Scheduler(BlockingQueue einQueue,BlockingQueue eoutQueue, BlockingQueue foutQueue, BlockingQueue finQueue, ElevatorSubsystem elev, FloorSubsystem floor) {
 		this.einQueue = einQueue;
 		this.eoutQueue= eoutQueue;
 		this.finQueue = finQueue;
 		this.foutQueue = foutQueue;
-		this.data = data;
 		this.elevator = elev;
 		this.floor  = floor;
 		System.out.println("Need to implement \"Scheduler()\"");
 	}
 	
+
 	/**
 	 * This method sends data to the elevator subsystem.
 	 */
@@ -69,8 +70,18 @@ public class Scheduler extends Thread {
 	/**
 	 * Main Method.
 	 */
-	public static void main() {
+	public static void main(String[] args) {
+		BlockingQueue<Request> floor_in_queue = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Request> floor_out_queue = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Request> elev_in_queue = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Request> elev_out_queue = new ArrayBlockingQueue<>(10);
+		FloorSubsystem floor = new FloorSubsystem(floor_out_queue, floor_in_queue);
+		ElevatorSubsystem elevator = new ElevatorSubsystem(elev_out_queue, elev_in_queue);
+		Scheduler scheduler = new Scheduler(elev_in_queue, elev_out_queue, floor_in_queue, floor_out_queue, elevator, floor);
 		
+		new Thread(floor).start();
+		new Thread(scheduler).start();
+		new Thread(elevator).start();
 	}
 
 }

@@ -49,8 +49,8 @@ public class FloorSubsystem implements Runnable {
 		
 		Request request = new Request(time, floorNum, direction, destinationFloor);
 		try {
-			tmp_queue.put(request);
-			send_queue = tmp_queue;
+			send_queue.put(request);
+			tmp_queue = send_queue;
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,6 +72,7 @@ public class FloorSubsystem implements Runnable {
 	
 	public void sendRequest(Request request) throws InterruptedException {
 		send_queue.put(request);
+		System.out.println("Sent data");
 	}
 	public void receiveRequest() {
 		Request data;
