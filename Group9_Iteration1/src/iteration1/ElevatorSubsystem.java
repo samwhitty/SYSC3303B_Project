@@ -45,15 +45,9 @@ public class ElevatorSubsystem implements Runnable {
 		Boolean done = false;
 		while (!done) {
 			System.out.println("Trying to send from Elevator");
-			System.out.println(canSend());
-			if (canSend()) {
-				try {
-					sendRequest();
-					done = false;
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			receive_queue.drainTo(send_queue);
+			if (receive_queue.isEmpty()) {
+				done = true;
 			}
 		}
 	}

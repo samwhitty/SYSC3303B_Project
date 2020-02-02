@@ -57,6 +57,8 @@ public class Scheduler extends Thread {
 	 */
 	@Override
 	public void run() {
+		System.out.println("Adding arbitrary data to Elevator out queue");
+		eoutQueue.add("Data");
 		while (eoutQueue.isEmpty()) {
 			System.out.println(foutQueue.isEmpty());
 			if (!foutQueue.isEmpty()) {

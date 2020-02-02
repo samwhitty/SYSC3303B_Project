@@ -39,18 +39,15 @@ public class FloorSubsystem implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			readInput();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			System.out.println("Sending");
-			sendRequest();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Boolean done = false;
+		while (!done) {
+			try {
+				sendRequest();
+				done = true;
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -67,9 +64,14 @@ public class FloorSubsystem implements Runnable {
 	}
 
 	public synchronized void sendRequest() throws InterruptedException {
-		receive_queue.add(direction);
+		System.out.println("Trying to send from FloorSubsystem");
 		receive_queue.drainTo(send_queue);
-		System.out.println(send_queue.size());
+		try {
+			wait(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public synchronized void receiveRequest() {
