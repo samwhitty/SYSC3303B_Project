@@ -34,14 +34,11 @@ public class Scheduler extends Thread {
 		this.floor  = floor;
 		
 	}
-	
-
 	/**
 	 * This method sends data to the elevator subsystem.
 	 */
 	public synchronized void sendDataToElevator() {
 		foutQueue.drainTo(einQueue);
-		System.out.println("Need to implement \"sendDataToElevator()\".");
 	}
 	
 	/**
@@ -49,7 +46,6 @@ public class Scheduler extends Thread {
 	 */
 	public synchronized void sendDataToFloor() {
 		eoutQueue.drainTo(finQueue);
-		System.out.println("Need to implement \"sendDataToFloor()\".");
 	}
 	
 	/**
@@ -57,11 +53,11 @@ public class Scheduler extends Thread {
 	 */
 	@Override
 	public void run(){
-		while(!eoutQueue.isEmpty()|| !foutQueue.isEmpty()) {
+		for(int i =0; i <= 2; i++) {
 			if(!eoutQueue.isEmpty()) {
 				this.sendDataToFloor();
 			}
-			if(!foutQueue.isEmpty()) {
+			else if(!foutQueue.isEmpty()) {
 				this.sendDataToElevator();
 			}
 		}

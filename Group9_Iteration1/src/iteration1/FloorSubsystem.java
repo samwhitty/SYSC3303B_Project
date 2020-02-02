@@ -40,22 +40,24 @@ public class FloorSubsystem implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			readInput();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for(int i = 0; i <= 2; i++) {
+			try {
+				readInput();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			Request request = new Request(time, floorNum, direction, destinationFloor);
+			
+			try {
+				tmp_queue.put(request);
+				tmp_queue = send_queue;
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
-		Request request = new Request(time, floorNum, direction, destinationFloor);
-		try {
-			send_queue.put(request);
-			tmp_queue = send_queue;
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 
 	public static void readInput() throws IOException {

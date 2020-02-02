@@ -22,14 +22,6 @@ public class ElevatorSubsystem implements Runnable{
 		this.einqueue = in;
 		this.eoutqueue = out;
 	}
-
-	public void openDoors(){
-		//Ask TA for elevator door logic
-	}
-	
-	public void closeDoors(){
-	}
-	
 	
 	public void sendRequest(Request request) throws InterruptedException {
 		einqueue.put(request);
@@ -37,12 +29,12 @@ public class ElevatorSubsystem implements Runnable{
 
 	@Override
 	public void run() {
-		while(!einqueue.isEmpty()) {
-			System.out.println(einqueue);
-			einqueue.drainTo(eoutqueue);
+		for(int i = 0; i <= 2; i++) {
+			if(!einqueue.isEmpty()) {
+				System.out.println(einqueue);
+				einqueue.drainTo(eoutqueue);
+			}
 		}
-		
 	}
-
 }	
 		
