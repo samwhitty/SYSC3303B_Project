@@ -20,6 +20,7 @@ public class ElevatorSubsystem {
 	public ElevatorSubsystem(BlockingQueue<Request> q) {
 		this.queue = q;
 	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// Gonna get to this tomorrow.
