@@ -22,4 +22,7 @@ public class Request {
 		this.direction = direction;
 		this.destinationFloor = destinationFloor;
 	}
+	public String toString() {
+		return "Time: " + time + " Floornum "+ Integer.toString(floorNum) + " Direction " + direction + " Destinatin Floor " + Integer.toString(destinationFloor) ;
+	}
 }

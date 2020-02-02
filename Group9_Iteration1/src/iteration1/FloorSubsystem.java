@@ -24,14 +24,16 @@ public class FloorSubsystem implements Runnable {
 	private static String direction;
 	private static int destinationFloor;
 	
-	private BlockingQueue<Request> queue;
+	private BlockingQueue<Request> send_queue;
+	private BlockingQueue<Request> receive_queue;
 
-	public FloorSubsystem(BlockingQueue<Request> q) {
+	public FloorSubsystem(BlockingQueue<Request> send_q, BlockingQueue<Request> receive_q) {
 		time = new TimeData();
 		floorNum = 0;
 		direction = "Up";
 		destinationFloor = 0;
-		this.queue = q;
+		this.send_queue = send_q;
+		this.receive_queue = receive_q;
 
 	}
 
@@ -46,7 +48,7 @@ public class FloorSubsystem implements Runnable {
 		
 		Request request = new Request(time, floorNum, direction, destinationFloor);
 		try {
-			queue.put(request);
+			send_queue.put(request);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,6 +69,17 @@ public class FloorSubsystem implements Runnable {
 	}
 	
 	public void sendRequest(Request request) throws InterruptedException {
-		queue.put(request);
+		send_queue.put(request);
+	}
+	public void receiveRequest() {
+		Request data;
+		try {
+			data = receive_queue.take();
+			System.out.println("Data Received:");
+			System.out.println(data.toString(););
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
