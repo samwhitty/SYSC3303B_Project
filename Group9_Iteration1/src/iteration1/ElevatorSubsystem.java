@@ -11,7 +11,7 @@ import util.Request;
 
 
 /**
- * @author Samuel Whitty & Said Omar & Everett Soldaat
+ * @author Samuel Whitty & Said Omar & Everett Soldaat & Michael Evans
  *
  */
 public class ElevatorSubsystem implements Runnable{

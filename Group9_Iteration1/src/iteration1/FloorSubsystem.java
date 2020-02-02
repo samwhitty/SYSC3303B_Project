@@ -26,6 +26,7 @@ public class FloorSubsystem implements Runnable {
 	
 	private BlockingQueue<Request> send_queue;
 	private BlockingQueue<Request> receive_queue;
+	private BlockingQueue<Request> tmp_queue;
 
 	public FloorSubsystem(BlockingQueue<Request> send_q, BlockingQueue<Request> receive_q) {
 		time = new TimeData();
@@ -48,7 +49,8 @@ public class FloorSubsystem implements Runnable {
 		
 		Request request = new Request(time, floorNum, direction, destinationFloor);
 		try {
-			send_queue.put(request);
+			tmp_queue.put(request);
+			send_queue = tmp_queue;
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

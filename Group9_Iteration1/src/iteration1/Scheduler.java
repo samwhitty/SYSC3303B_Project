@@ -9,7 +9,7 @@ import util.ButtonDataStruct;
 import util.Request;
 
 /**
- * @author Samuel Whitty
+ * @author Samuel Whitty & Michael Evans
  * 
  */
 public class Scheduler extends Thread {
@@ -56,7 +56,14 @@ public class Scheduler extends Thread {
 	 */
 	@Override
 	public void run(){
-		
+		while(!eoutQueue.isEmpty()|| !foutQueue.isEmpty()) {
+			if(!eoutQueue.isEmpty()) {
+				this.sendDataToFloor();
+			}
+			if(!foutQueue.isEmpty()) {
+				this.sendDataToElevator();
+			}
+		}
 	}
 	
 	/**
