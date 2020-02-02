@@ -36,5 +36,16 @@ public class ElevatorSubsystem {
 				return "invalid packet value";
 			}
 		}
+	//add other stuff
+	}
+	
+	
+	public boolean validateRequest(){
+		{
+			//validates the text sent to the elevator is a valid command
+		}
+			
+		
+	
 
 }
