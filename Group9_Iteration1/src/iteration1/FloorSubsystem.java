@@ -14,7 +14,7 @@ import util.Request;
 import util.TimeData;
 
 /**
- * @author Samuel Whitty
+ * @authors Everett Soldaat & Samuel Whitty
  *
  */
 public class FloorSubsystem implements Runnable {
