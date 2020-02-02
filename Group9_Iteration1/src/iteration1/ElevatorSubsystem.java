@@ -20,5 +20,21 @@ public class ElevatorSubsystem {
 		// TODO Auto-generated method stub
 		// Gonna get to this tomorrow.
 	}
+	
+	public void openDoors(){
+		//Ask TA for elevator door logic
+	}
+	
+	public void closeDoors(){
+	}
+	
+	
+	public String validatePacket(byte[] data){
+		//checking if input data is valid since all byte values are less than 127
+		for(int s = 1; s<data.length;s++){
+			if (data[s] > 127 && data[s] < 0){
+				return "invalid packet value";
+			}
+		}
 
 }
