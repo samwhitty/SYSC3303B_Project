@@ -9,19 +9,21 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
+import util.TimeData;
+
 /**
  * @author Samuel Whitty
  *
  */
 public class FloorSubsystem {
 
-	private static String time;
+	private static TimeData time;
 	private static int floorNum;
 	private static String direction;
 	private static int destinationFloor;
 
 	public FloorSubsystem() {
-		time = "00:00:00:00";
+		time = new TimeData();
 		floorNum = 0;
 		direction = "Up";
 		destinationFloor = 0;
@@ -40,7 +42,7 @@ public class FloorSubsystem {
 		Scanner s = new Scanner(file);
 		s.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d) (\\d) ([a-zA-Z]+) (\\d)");
 		MatchResult result = s.match();
-		time = result.group(1);
+		time = new TimeData(result.group(1));
 		floorNum = Integer.parseInt(result.group(2));
 		direction = result.group(3);
 		destinationFloor = Integer.parseInt(result.group(4));

@@ -47,7 +47,6 @@ public class Scheduler extends Thread {
 	
 	/**
 	 * Runs the scheduler.
-	 * @return 
 	 */
 	@Override
 	public void run(){

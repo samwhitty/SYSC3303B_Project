@@ -50,6 +50,14 @@ public class TimeData {
 		return timeString;
 	}
 	
+	public TimeData() {
+		this.hour = 0;
+		this.minute = 0;
+		this.second = 0;
+		this.millisecond = 0;
+		this.timeString = "00;00;00.0";
+	}
+	
 	public TimeData(String time) {
 		String[] parsedTime = parseTime(time);
 		

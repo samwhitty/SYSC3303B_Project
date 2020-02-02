@@ -10,7 +10,7 @@ import java.net.*;
  * @author Said Omar
  *
  */
-public class elevatorSubsystem {
+public class ElevatorSubsystem {
 	DatagramPacket sendPacket, receivePacket;
         DatagramSocket sendSocket, receiveSocket;
 	/**
