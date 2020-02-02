@@ -23,12 +23,11 @@ public class FloorSubsystem implements Runnable {
 	private static int floorNum;
 	private static String direction;
 	private static int destinationFloor;
-	
-	private BlockingQueue<Request> send_queue;
-	private BlockingQueue<Request> receive_queue;
-	private BlockingQueue<Request> tmp_queue;
 
-	public FloorSubsystem(BlockingQueue<Request> send_q, BlockingQueue<Request> receive_q) {
+	private BlockingQueue<String> send_queue;
+	private BlockingQueue<String> receive_queue;
+
+	public FloorSubsystem(BlockingQueue<String> send_q, BlockingQueue<String> receive_q) {
 		time = new TimeData();
 		floorNum = 0;
 		direction = "Up";
@@ -40,27 +39,22 @@ public class FloorSubsystem implements Runnable {
 
 	@Override
 	public void run() {
-		for(int i = 0; i <= 2; i++) {
-			try {
-				readInput();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			Request request = new Request(time, floorNum, direction, destinationFloor);
-			
-			try {
-				tmp_queue.put(request);
-				tmp_queue = send_queue;
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			readInput();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			System.out.println("Sending");
+			sendRequest();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
-	public static void readInput() throws IOException {
+	public synchronized static void readInput() throws IOException {
 		File file = new File("src/iteration1/input.txt");
 		Scanner s = new Scanner(file);
 		s.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d) (\\d) ([a-zA-Z]+) (\\d)");
@@ -71,20 +65,14 @@ public class FloorSubsystem implements Runnable {
 		destinationFloor = Integer.parseInt(result.group(4));
 		s.close();
 	}
-	
-	public void sendRequest(Request request) throws InterruptedException {
-		send_queue.put(request);
-		System.out.println("Sent data");
+
+	public synchronized void sendRequest() throws InterruptedException {
+		receive_queue.add(direction);
+		receive_queue.drainTo(send_queue);
+		System.out.println(send_queue.size());
 	}
-	public void receiveRequest() {
-		Request data;
-		try {
-			data = receive_queue.take();
-			System.out.println("Data Received:");
-			System.out.println(data.toString());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+	public synchronized void receiveRequest() {
+		send_queue.drainTo(receive_queue);
 	}
 }
