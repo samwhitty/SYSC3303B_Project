@@ -5,6 +5,8 @@ package iteration1;
 import java.io.*;
 import java.math.*;
 import java.net.*;
+import.java.util.*;
+private BlockingQueue<Request> queue;
 /**
  * @author Samuel Whitty & Said Omar & Everett Soldaat
  *
