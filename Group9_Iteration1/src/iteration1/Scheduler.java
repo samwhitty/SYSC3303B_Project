@@ -32,7 +32,7 @@ public class Scheduler extends Thread {
 		this.foutQueue = foutQueue;
 		this.elevator = elev;
 		this.floor  = floor;
-		System.out.println("Need to implement \"Scheduler()\"");
+		
 	}
 	
 

@@ -38,6 +38,7 @@ public class ElevatorSubsystem implements Runnable{
 	@Override
 	public void run() {
 		while(!einqueue.isEmpty()) {
+			System.out.println(einqueue);
 			einqueue.drainTo(eoutqueue);
 		}
 		
