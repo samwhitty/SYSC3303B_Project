@@ -21,12 +21,19 @@ public class ElevatorSubsystem implements Runnable {
 		this.send_queue = out;
 	}
 
+	/*
+	 * Sends request.
+	 * Also empties the in queue.
+	 */
 	private synchronized void sendRequest() throws InterruptedException {
 		receive_queue.drainTo(send_queue);
 		System.out.println("Subsystem sent data");
 		receive_queue.clear();
 	}
 
+	/*
+	 * Checks if it can send data.
+	 */
 	private synchronized Boolean canSend() {
 		if (!send_queue.isEmpty()) {
 			return true;
@@ -40,6 +47,9 @@ public class ElevatorSubsystem implements Runnable {
 		return false;
 	}
 
+	/*
+	 * Sends data if possible, stops once it successfully sends data.
+	 */
 	@Override
 	public void run() {
 		Boolean done = false;

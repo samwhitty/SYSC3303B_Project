@@ -36,7 +36,9 @@ public class FloorSubsystem implements Runnable {
 		this.receive_queue = receive_q;
 
 	}
-
+	/*
+	 * Sends data if possible, stops once it successfully sends data.
+	 */
 	@Override
 	public void run() {
 		Boolean done = false;
@@ -51,6 +53,9 @@ public class FloorSubsystem implements Runnable {
 		}
 	}
 
+	/*
+	 * Reads input from file.
+	 */
 	public synchronized static void readInput() throws IOException {
 		File file = new File("src/iteration1/input.txt");
 		Scanner s = new Scanner(file);
@@ -63,6 +68,10 @@ public class FloorSubsystem implements Runnable {
 		s.close();
 	}
 
+	/*
+	 * Sends data from receive queue to out queue.
+	 * Also empties the in queue.
+	 */
 	public synchronized void sendRequest() throws InterruptedException {
 		System.out.println("Trying to send from FloorSubsystem");
 		receive_queue.drainTo(send_queue);

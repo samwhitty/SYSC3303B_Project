@@ -38,6 +38,7 @@ public class Scheduler extends Thread {
 
 	/**
 	 * This method sends data to the elevator subsystem.
+	 * Also empties the out queue.
 	 */
 	public synchronized void sendDataToElevator() {
 		System.out.println("Sending to elev");
