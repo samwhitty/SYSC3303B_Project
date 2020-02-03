@@ -10,7 +10,6 @@ import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.regex.MatchResult;
 
-import util.Request;
 import util.TimeData;
 
 /**
@@ -36,44 +35,40 @@ public class FloorSubsystem implements Runnable {
 		this.receive_queue = receive_q;
 
 	}
+
 	/*
 	 * Sends data if possible, stops once it successfully sends data.
 	 */
 	@Override
 	public void run() {
-		Boolean done = false;
-		while (!done) {
-			try {
-				sendRequest();
-				done = true;
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		System.out.println("Floor Subsystem running.");
+	}
+
+	/*
+	 * Reads input from file. Should be passed a string with the full filename.
+	 * Works for any plain text file. Must be in format of "HH/MM/SS.S"
+	 */
+	public synchronized void readInput(String input) throws IOException {
+		try {
+			File file = new File("src/iteration1/" + input);
+			Scanner s = new Scanner(file);
+			s.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d) (\\d) ([a-zA-Z]+) (\\d)");
+			MatchResult result = s.match();
+			time = new TimeData(result.group(1));
+			floorNum = Integer.parseInt(result.group(2));
+			direction = result.group(3);
+			destinationFloor = Integer.parseInt(result.group(4));
+			s.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 
 	/*
-	 * Reads input from file.
-	 */
-	public synchronized static void readInput() throws IOException {
-		File file = new File("src/iteration1/input.txt");
-		Scanner s = new Scanner(file);
-		s.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d) (\\d) ([a-zA-Z]+) (\\d)");
-		MatchResult result = s.match();
-		time = new TimeData(result.group(1));
-		floorNum = Integer.parseInt(result.group(2));
-		direction = result.group(3);
-		destinationFloor = Integer.parseInt(result.group(4));
-		s.close();
-	}
-
-	/*
-	 * Sends data from receive queue to out queue.
-	 * Also empties the in queue.
+	 * Sends data from receive queue to out queue. Also empties the in queue.
 	 */
 	public synchronized void sendRequest() throws InterruptedException {
-		System.out.println("Trying to send from FloorSubsystem");
+		System.out.println("Moving Floor in Queue data to out Queue");
 		receive_queue.drainTo(send_queue);
 		try {
 			wait(100);

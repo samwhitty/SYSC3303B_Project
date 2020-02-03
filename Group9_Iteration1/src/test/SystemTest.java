@@ -35,9 +35,9 @@ public class SystemTest {
 	}
 	@Test
 	public void dataTransfer() throws IOException, InterruptedException {
-		floor.readInput();
+//		floor.readInput("input.txt");
 		floor.sendRequest();
-		assertTrue("checks is queue is empty", )
+//		assertTrue("checks is queue is empty");
 		
 	}
 }

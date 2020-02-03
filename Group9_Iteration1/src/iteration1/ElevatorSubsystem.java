@@ -5,8 +5,6 @@ package iteration1;
 
 import java.util.concurrent.BlockingQueue;
 
-import util.Request;
-
 /**
  * @author Samuel Whitty & Said Omar & Everett Soldaat & Michael Evans
  *
@@ -25,16 +23,16 @@ public class ElevatorSubsystem implements Runnable {
 	 * Sends request.
 	 * Also empties the in queue.
 	 */
-	private synchronized void sendRequest() throws InterruptedException {
+	public synchronized void sendRequest() throws InterruptedException {
+		System.out.println("Moving Elevator in Queue data to out Queue");
 		receive_queue.drainTo(send_queue);
-		System.out.println("Subsystem sent data");
 		receive_queue.clear();
 	}
 
 	/*
 	 * Checks if it can send data.
 	 */
-	private synchronized Boolean canSend() {
+	public synchronized Boolean canSend() {
 		if (!send_queue.isEmpty()) {
 			return true;
 		}
@@ -44,6 +42,7 @@ public class ElevatorSubsystem implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Can not print.");
 		return false;
 	}
 
@@ -52,13 +51,6 @@ public class ElevatorSubsystem implements Runnable {
 	 */
 	@Override
 	public void run() {
-		Boolean done = false;
-		while (!done) {
-			System.out.println("Trying to send from Elevator");
-			receive_queue.drainTo(send_queue);
-			if (receive_queue.isEmpty()) {
-				done = true;
-			}
-		}
+		System.out.println("Elevator Subsystem running.");
 	}
 }
