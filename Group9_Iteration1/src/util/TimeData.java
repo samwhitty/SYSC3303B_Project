@@ -21,15 +21,38 @@ public class TimeData {
 
 	public void setMin(int min) {
 		this.minute = min % 60;
-		this.hour += (int) Math.floor(min/60);
+		this.hour += (int) Math.floor(min / 60);
 	}
 
 	// Sets Seconds, but also checks if there is 60 or more seconds
 	public void setSec(double sec) {
 		double secon = Math.floor(sec);
-		this.millisecond += (int) ((sec - secon) * 1000);
-		this.second = (int) secon;
-		this.minute += (int) Math.floor(sec/60);
+		if (sec >= 60) {
+			this.hour += sec % 360;
+			this.minute += sec % 60;
+			while (sec > 60) {
+				sec -= 1000;
+			}
+			this.second = (int) sec;
+			setMil((int) (sec - secon) * 1000);
+		} else {
+			this.millisecond += (int) (sec - secon) * 1000;
+			this.second = (int) Math.floor(sec);
+		}
+	}
+
+	public void setMil(int mil) {
+		if (mil > 1000) {
+			this.hour += mil % 3600000;
+			this.minute += mil % 60000;
+			this.second += mil % 1000;
+			while (mil > 1000) {
+				mil -= 1000;
+			}
+			this.millisecond = mil;
+		} else {
+			this.millisecond = mil;
+		}
 	}
 
 	/*
