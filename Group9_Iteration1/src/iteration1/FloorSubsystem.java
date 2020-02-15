@@ -25,7 +25,21 @@ public class FloorSubsystem implements Runnable {
 
 	private BlockingQueue<Object[]> send_queue;
 	private BlockingQueue<Object[]> receive_queue;
+
 	private Object[] data =  new Object[4];
+
+	File file = new File("src/iteration1/input.txt");
+	Scanner s;
+
+	private void initScanner() {
+		try {
+			s = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	public FloorSubsystem(BlockingQueue<Object[]> send_q, BlockingQueue<Object[]> receive_q) {
 		time = new TimeData();
@@ -34,6 +48,7 @@ public class FloorSubsystem implements Runnable {
 		destinationFloor = 0;
 		this.send_queue = send_q;
 		this.receive_queue = receive_q;
+		initScanner();
 
 	}
 
@@ -43,35 +58,38 @@ public class FloorSubsystem implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Floor Subsystem running.");
+
 		while(true) {
 			if(send_queue.isEmpty() && receive_queue.isEmpty()) {
 				
 			}
 		}
-	}
 
+	}
 	/*
 	 * Reads input from file. Should be passed a string with the full filename.
 	 * Works for any plain text file. Must be in format of "HH/MM/SS.S"
 	 */
-	public synchronized void readInput(String input) throws IOException {
-		try {
-			File file = new File("src/iteration1/" + input);
-			Scanner s = new Scanner(file);
-			s.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d) (\\d) ([a-zA-Z]+) (\\d)");
-			MatchResult result = s.match();
-			time = new TimeData(result.group(1));
-			floorNum = Integer.parseInt(result.group(2));
-			direction = result.group(3);
-			destinationFloor = Integer.parseInt(result.group(4));
-			this.data[0] = time;
-			this.data[1] = floorNum;
-			this.data[2] = direction;
-			this.data[3] = destinationFloor;
-			s.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+
+	
+	public synchronized boolean readInput() throws IOException {
+		s.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d) (\\d) ([a-zA-Z]+) (\\d)");
+		MatchResult result = s.match();
+		time = new TimeData(result.group(1));
+		System.out.println("Line : " + time);
+		floorNum = Integer.parseInt(result.group(2));
+		direction = result.group(3);
+		destinationFloor = Integer.parseInt(result.group(4));
+		data[0] = time;
+		data[1] = floorNum;
+		data[2] = direction;
+		data[3] = destinationFloor;
+		if (s.hasNext()) {
+			s.nextLine();
+			return true;
+
 		}
+		return false;
 	}
 
 	/*
