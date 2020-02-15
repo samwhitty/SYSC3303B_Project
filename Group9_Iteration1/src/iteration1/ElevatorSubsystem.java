@@ -5,7 +5,8 @@ package iteration1;
 
 import java.util.concurrent.BlockingQueue;
 
-import iteration2.ElevatorStateMachine.State;
+import iteration2.ElevatorStateMachine.EState;
+
 import util.TimeData;
 
 /**
@@ -16,13 +17,13 @@ public class ElevatorSubsystem implements Runnable {
 
 	private BlockingQueue<Object[]> send_queue;
 	private BlockingQueue<Object[]> receive_queue;
-	private State state;
+	private EState state;
 	private Object[] data = new Object[5];
 
 	public ElevatorSubsystem(BlockingQueue<Object[]> in, BlockingQueue<Object[]> out) {
 		this.receive_queue = in;
 		this.send_queue = out;
-		this.state = State.WAITING;
+		this.state = EState.WAITING;
 		this.data[4] = 1;
 	}
 
@@ -69,7 +70,7 @@ public class ElevatorSubsystem implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		while(!state.equals(State.STOPPED)) {
+		while(!state.equals(EState.STOPPED)) {
 			state = state.next(data);
 		}
 		
