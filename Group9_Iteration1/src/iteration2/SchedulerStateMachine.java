@@ -17,41 +17,48 @@ public class SchedulerStateMachine extends Scheduler {
 		
 	}
 
-	public static enum State{
+	public static enum SchedulerState{
 		WAITFORREQUEST{
 			@Override
-			public State next(Object[] data) {
+			public SchedulerState next(Object[] data) {
 				if (data[2] == (String) "Up") {
 					if ((int) data[1] > (int) data[3]) {
 						return INVALID;
 					} else if ((int) data[1] == (int) data[3]) {
 						return INVALID;
-					} else {
-						return DISPATCHELEVATOR;
 					}
 				}
+				
+				if (data[2] == (String) "Down") {
+					if ((int) data[1] < (int) data[3]) {
+						return INVALID;
+					} else if ((int) data[1] == (int) data[3]) {
+						return INVALID;
+					} 
+				}
+				return DISPATCHELEVATOR;
 			}
 		},
 		DISPATCHELEVATOR{
 			@Override
-			public State next(Object[] data) {
+			public SchedulerState next(Object[] data) {
 				return DISPATCHELEVATOR;
 			}
 		},
 		WAITFORELEVATOR{
 			@Override
-			public State next(Object[] data) {
+			public SchedulerState next(Object[] data) {
 				return WAITFORELEVATOR;
 			}
 		},
 		INVALID{
 			@Override
-			public State next(Object[] data) {
+			public SchedulerState next(Object[] data) {
 				return INVALID;
 			}
 		};
 		
-		public State next(Object[] data) {
+		public SchedulerState next(Object[] data) {
 			return null;
 		}
 		
