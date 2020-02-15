@@ -23,10 +23,11 @@ public class FloorSubsystem implements Runnable {
 	private static String direction;
 	private static int destinationFloor;
 
-	private BlockingQueue<String> send_queue;
-	private BlockingQueue<String> receive_queue;
+	private BlockingQueue<Object[]> send_queue;
+	private BlockingQueue<Object[]> receive_queue;
+	private Object[] data;
 
-	public FloorSubsystem(BlockingQueue<String> send_q, BlockingQueue<String> receive_q) {
+	public FloorSubsystem(BlockingQueue<Object[]> send_q, BlockingQueue<Object[]> receive_q) {
 		time = new TimeData();
 		floorNum = 0;
 		direction = "Up";
@@ -42,6 +43,7 @@ public class FloorSubsystem implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Floor Subsystem running.");
+		
 	}
 
 	/*
@@ -58,6 +60,10 @@ public class FloorSubsystem implements Runnable {
 			floorNum = Integer.parseInt(result.group(2));
 			direction = result.group(3);
 			destinationFloor = Integer.parseInt(result.group(4));
+			data[0] = time;
+			data[1] = floorNum;
+			data[2] = direction;
+			data[3] = destinationFloor;
 			s.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -69,6 +75,7 @@ public class FloorSubsystem implements Runnable {
 	 */
 	public synchronized void sendRequest() throws InterruptedException {
 		System.out.println("Moving Floor in Queue data to out Queue");
+		receive_queue.add(data);
 		receive_queue.drainTo(send_queue);
 		try {
 			wait(100);

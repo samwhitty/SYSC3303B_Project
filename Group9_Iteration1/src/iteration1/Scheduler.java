@@ -18,16 +18,16 @@ public class Scheduler extends Thread {
 	private ButtonDataStruct data = null;
 	private ElevatorSubsystem elevator = null;
 	private FloorSubsystem floor = null;
-	private BlockingQueue<String> einQueue = null;
-	private BlockingQueue<String> eoutQueue = null;
-	private BlockingQueue<String> finQueue = null;
-	private BlockingQueue<String> foutQueue = null;
+	private BlockingQueue<Object[]> einQueue = null;
+	private BlockingQueue<Object[]> eoutQueue = null;
+	private BlockingQueue<Object[]> finQueue = null;
+	private BlockingQueue<Object[]> foutQueue = null;
 
 	/*
 	 * Constructor for the scheduler.
 	 */
-	public Scheduler(BlockingQueue<String> einQueue, BlockingQueue<String> eoutQueue, BlockingQueue<String> foutQueue,
-			BlockingQueue<String> finQueue, ElevatorSubsystem elev, FloorSubsystem floor) {
+	public Scheduler(BlockingQueue<Object[]> einQueue, BlockingQueue<Object[]> eoutQueue, BlockingQueue<Object[]> foutQueue,
+			BlockingQueue<Object[]> finQueue, ElevatorSubsystem elev, FloorSubsystem floor) {
 		this.einQueue = einQueue;
 		this.eoutQueue = eoutQueue;
 		this.finQueue = finQueue;
@@ -68,8 +68,8 @@ public class Scheduler extends Thread {
 	/**
 	 * Checks if either of the queues has data to send.
 	 */
-	public synchronized Boolean dataWaiting() {
-		if (eoutQueue.isEmpty() || foutQueue.isEmpty()) {
+	public synchronized Boolean dataWaitingFloor() {
+		if (foutQueue.isEmpty()) {
 			System.out.println("No data to send.");
 			return false;
 		} else {
@@ -77,7 +77,15 @@ public class Scheduler extends Thread {
 			return true;
 		}
 	}
-
+	public synchronized Boolean dataWaitingeElevator() {
+		if (eoutQueue.isEmpty()) {
+			System.out.println("No data to send.");
+			return false;
+		} else {
+			System.out.println("Data ready to send");
+			return true;
+		}
+	}
 	/**
 	 * Sends a filename to the FloorSubsystem for it to read.
 	 */
@@ -96,12 +104,15 @@ public class Scheduler extends Thread {
 	@Override
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
-		Boolean keepRunning = true;
-
-		while (keepRunning) {
+		
+		while (true) {
 			makeFloorRead("input.txt");
-			sendDataToElevator();
-			sendDataToFloor();
+			if(this.dataWaitingFloor()) {
+				sendDataToFloor();
+			}
+			else if(this.dataWaitingeElevator()) {
+				sendDataToElevator();
+			}
 		}
 	}
 
@@ -109,10 +120,10 @@ public class Scheduler extends Thread {
 	 * Main Method.
 	 */
 	public static void main(String[] args) {
-		BlockingQueue<String> floor_in_queue = new ArrayBlockingQueue<>(10);
-		BlockingQueue<String> floor_out_queue = new ArrayBlockingQueue<>(10);
-		BlockingQueue<String> elev_in_queue = new ArrayBlockingQueue<>(10);
-		BlockingQueue<String> elev_out_queue = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Object[]> floor_in_queue = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Object[]> floor_out_queue = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Object[]> elev_in_queue = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Object[]> elev_out_queue = new ArrayBlockingQueue<>(10);
 		FloorSubsystem floor = new FloorSubsystem(floor_out_queue, floor_in_queue);
 		ElevatorSubsystem elevator = new ElevatorSubsystem(elev_out_queue, elev_in_queue);
 		Scheduler scheduler = new Scheduler(elev_in_queue, elev_out_queue, floor_in_queue, floor_out_queue, elevator,
