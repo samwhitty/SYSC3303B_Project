@@ -9,10 +9,10 @@ package util;
  * Custom time object.
  */
 public class TimeData {
-	private Byte hour;
-	private Byte minute;
-	private Byte second;
-	private Byte millisecond;
+	private int hour;
+	private int minute;
+	private int second;
+	private int millisecond;
 	private String timeString;
 	
 	/*
@@ -30,19 +30,19 @@ public class TimeData {
 		return parsedTime;
 	}
 	
-	public Byte hour() {
+	public int hour() {
 		return this.hour;
 	}
 	
-	public Byte minute() {
+	public int minute() {
 		return this.minute;
 	}
 	
-	public Byte second() {
+	public int second() {
 		return this.second;
 	}
 	
-	public Byte millisecond() {
+	public int millisecond() {
 		return this.millisecond;
 	}
 	
@@ -61,10 +61,10 @@ public class TimeData {
 	public TimeData(String time) {
 		String[] parsedTime = parseTime(time);
 		
-		this.hour = Byte.parseByte(parsedTime[0]);
-		this.minute = Byte.parseByte(parsedTime[1]);
-		this.second = Byte.parseByte(parsedTime[2]);
-		this.millisecond = Byte.parseByte(parsedTime[3]);
+		this.hour = Integer.parseInt(parsedTime[0]);
+		this.minute = Integer.parseInt(parsedTime[1]);
+		this.second = Integer.parseInt(parsedTime[2]);
+		this.millisecond = Integer.parseInt(parsedTime[3]);
 		this.timeString = time;
 		
 		parsedTime = null;

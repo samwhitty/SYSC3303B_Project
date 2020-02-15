@@ -1,17 +1,23 @@
 package iteration2;
 
+import java.util.concurrent.BlockingQueue;
+
+import iteration1.ElevatorSubsystem;
+import iteration1.FloorSubsystem;
 import iteration1.Scheduler;
 
 public class SchedulerStateMachine extends Scheduler {
 
-	public SchedulerStateMachine() {
-		super();
-	}
 	
+	
+	public SchedulerStateMachine(BlockingQueue<Object[]> einQueue, BlockingQueue<Object[]> eoutQueue,
+			BlockingQueue<Object[]> foutQueue, BlockingQueue<Object[]> finQueue, ElevatorSubsystem elev,
+			FloorSubsystem floor) {
+		super(einQueue, eoutQueue, foutQueue, finQueue, elev, floor);
+		
+	}
+
 	public static enum State{
-		INIT{
-			
-		},
 		WAITFORREQUEST{
 			@Override
 			public State next(Object[] data) {
@@ -37,9 +43,6 @@ public class SchedulerStateMachine extends Scheduler {
 			public State next(Object[] data) {
 				return WAITFORELEVATOR;
 			}
-		},
-		BLOCKED{
-			
 		},
 		INVALID{
 			@Override

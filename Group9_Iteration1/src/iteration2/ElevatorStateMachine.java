@@ -15,32 +15,42 @@ public class ElevatorStateMachine extends ElevatorSubsystem{
 		WAITING {
 			@Override
 			public State next(Object[] data) {
-				if (data[2] == (String) "Up") {
-					if ((int) data[1] < (int) data[3]) {
-						return STOPPED;
-					} else if ((int) data[1] == (int) data[3]) {
-						return STOPPED;
-					} else {
-						return LOADING;
-					}
-				} else if (data[2] == (String) "Down") {
-					if ((int) data[1] > (int) data[3]) {
-						return STOPPED;
-					} else if ((int) data[1] == (int) data[3]) {
-						return STOPPED;
-					} else {
-						return LOADING;
-					}
+				if((int) data[1] < (int) data[4]){
+					return DOWN;
 				}
-				
-				return null;
+				else if((int) data[1] > (int) data[4]) {
+					return UP;
+				}
+				else {
+					return LOADING;
+				}
 			}
 		},
 		LOADING{
-			
-			
+			@Override
+			public State next(Object[] data) {
+				if (data[2] == (String) "Up") {
+					return UP;
+				}
+				else if (data[2] == (String) "Down") {
+					return DOWN;
+				}
+				return null;
+			}
 		},
-		MOVING {
+		UP {
+			@Override
+			public State next(Object[] data) {
+				if()
+			}
+		},
+		DOWN{
+			@Override
+			public State next(Object[] data) {
+				return null;
+			}
+		},
+		UNLOADING{
 			@Override
 			public State next(Object[] data) {
 				return null;
@@ -49,7 +59,7 @@ public class ElevatorStateMachine extends ElevatorSubsystem{
 		STOPPED {
 			@Override
 			public State next(Object[] data) {
-
+				
 				return null;
 			}
 		},;

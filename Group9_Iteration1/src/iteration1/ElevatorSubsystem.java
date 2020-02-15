@@ -23,6 +23,7 @@ public class ElevatorSubsystem implements Runnable {
 		this.receive_queue = in;
 		this.send_queue = out;
 		this.state = State.WAITING;
+		this.data[4] = 1;
 	}
 
 	/*
@@ -35,7 +36,7 @@ public class ElevatorSubsystem implements Runnable {
 		receive_queue.clear();
 	}
 	public void setData(Object[] data) {
-		
+		this.data = data;
 	}
 	/*
 	 * Checks if it can send data.
