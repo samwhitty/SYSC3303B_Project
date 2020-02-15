@@ -1,8 +1,17 @@
 package iteration2;
 
-public class ElevatorStateMachine {
+import java.util.concurrent.BlockingQueue;
+
+import iteration1.ElevatorSubsystem;
+
+public class ElevatorStateMachine extends ElevatorSubsystem{
+
+	public ElevatorStateMachine(BlockingQueue<Object[]> in, BlockingQueue<Object[]> out) {
+		super(in, out);
+	}
 
 	public static enum State {
+		
 		WAITING {
 			@Override
 			public State next(Object[] data) {
@@ -23,6 +32,7 @@ public class ElevatorStateMachine {
 						return LOADING;
 					}
 				}
+				
 				return null;
 			}
 		},

@@ -34,7 +34,9 @@ public class ElevatorSubsystem implements Runnable {
 		receive_queue.drainTo(send_queue);
 		receive_queue.clear();
 	}
-	
+	public void setData(Object[] data) {
+		
+	}
 	/*
 	 * Checks if it can send data.
 	 */
@@ -66,7 +68,7 @@ public class ElevatorSubsystem implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		while(state.equals(State.STOPPED)) {
+		while(!state.equals(State.STOPPED)) {
 			state = state.next(data);
 		}
 		
