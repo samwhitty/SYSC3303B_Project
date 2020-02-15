@@ -26,8 +26,6 @@ public class FloorSubsystem implements Runnable {
 	private BlockingQueue<Object[]> send_queue;
 	private BlockingQueue<Object[]> receive_queue;
 	private Object[] data = new Object[4];
-	
-	public boolean stop = false;
 
 	File file = new File("src/iteration1/input.txt");
 	Scanner s;
