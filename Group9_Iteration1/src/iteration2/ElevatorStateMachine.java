@@ -3,6 +3,7 @@ package iteration2;
 import java.util.concurrent.BlockingQueue;
 
 import iteration1.ElevatorSubsystem;
+import util.TimeData;
 
 public class ElevatorStateMachine extends ElevatorSubsystem{
 
@@ -10,11 +11,11 @@ public class ElevatorStateMachine extends ElevatorSubsystem{
 		super(in, out);
 	}
 
-	public static enum State {
+	public static enum EState {
 		
 		WAITING {
 			@Override
-			public State next(Object[] data) {
+			public EState next(Object[] data) {
 				if((int) data[1] < (int) data[4]){
 					return DOWN;
 				}
@@ -28,7 +29,8 @@ public class ElevatorStateMachine extends ElevatorSubsystem{
 		},
 		LOADING{
 			@Override
-			public State next(Object[] data) {
+			public EState next(Object[] data) {
+				TimeData time = (TimeData) data[0];
 				if (data[2] == (String) "Up") {
 					return UP;
 				}
@@ -40,31 +42,36 @@ public class ElevatorStateMachine extends ElevatorSubsystem{
 		},
 		UP {
 			@Override
-			public State next(Object[] data) {
-				if()
+			public EState next(Object[] data) {
+				TimeData time = (TimeData) data[0];
+				int travel = (int) data[3] - (int) data[1]; 
+				if(travel > 1) {
+					
+				}
 			}
 		},
 		DOWN{
 			@Override
-			public State next(Object[] data) {
+			public EState next(Object[] data) {
+				TimeData time = (TimeData) data[0];
 				return null;
 			}
 		},
 		UNLOADING{
 			@Override
-			public State next(Object[] data) {
+			public EState next(Object[] data) {
 				return null;
 			}
 		},
 		STOPPED {
 			@Override
-			public State next(Object[] data) {
+			public EState next(Object[] data) {
 				
 				return null;
 			}
 		},;
 
-		public State next(Object[] data) {
+		public EState next(Object[] data) {
 			// Leave unimplemented
 			return null;
 		}

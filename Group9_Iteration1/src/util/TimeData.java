@@ -33,7 +33,6 @@ public class TimeData {
 	public int hour() {
 		return this.hour;
 	}
-	
 	public int minute() {
 		return this.minute;
 	}
