@@ -17,12 +17,12 @@ public class ElevatorSubsystem implements Runnable {
 	private BlockingQueue<Object[]> send_queue;
 	private BlockingQueue<Object[]> receive_queue;
 	private State state;
-	private Object[] data;
+	private Object[] data = new Object[5];
 
 	public ElevatorSubsystem(BlockingQueue<Object[]> in, BlockingQueue<Object[]> out) {
 		this.receive_queue = in;
 		this.send_queue = out;
-		this.state = state.WAITING;
+		this.state = State.WAITING;
 	}
 
 	/*
@@ -66,7 +66,10 @@ public class ElevatorSubsystem implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		state.next(data);
+		while(state.equals(State.STOPPED)) {
+			state = state.next(data);
+		}
+		
 	}
 	/*
 	 * Sends data if possible, stops once it successfully sends data.

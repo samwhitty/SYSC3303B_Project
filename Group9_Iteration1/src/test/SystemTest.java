@@ -28,10 +28,9 @@ public class SystemTest {
 		floor_out_queue = new ArrayBlockingQueue<>(10);
 		elev_in_queue = new ArrayBlockingQueue<>(10);
 		elev_out_queue = new ArrayBlockingQueue<>(10);
-		floor = new FloorSubsystem(floor_out_queue, floor_in_queue);
-		elevator = new ElevatorSubsystem(elev_out_queue, elev_in_queue);
-		scheduler = new Scheduler(elev_in_queue, elev_out_queue, floor_in_queue, floor_out_queue, elevator,
-				floor);
+		//floor = new FloorSubsystem(floor_out_queue, floor_in_queue);
+		//elevator = new ElevatorSubsystem(elev_out_queue, elev_in_queue);
+		//scheduler = new Scheduler(elev_in_queue, elev_out_queue, floor_in_queue, floor_out_queue, elevator, floor);
 	}
 	@Test
 	public void dataTransfer() throws IOException, InterruptedException {
