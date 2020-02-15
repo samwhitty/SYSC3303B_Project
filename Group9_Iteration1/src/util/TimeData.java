@@ -29,7 +29,7 @@ public class TimeData {
 		double secon = Math.floor(sec);
 		this.millisecond += (int) ((sec - secon) * 1000);
 		this.second = (int) secon;
-		this.minute = (int) Math.floor(sec/60);
+		this.minute += (int) Math.floor(sec/60);
 	}
 
 	/*
