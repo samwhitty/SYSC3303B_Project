@@ -10,6 +10,8 @@ import java.util.concurrent.BlockingQueue;
 import util.ButtonDataStruct;
 import util.Request;
 
+import iteration2.SchedulerStateMachine.SchedulerState;
+
 /**
  * @author Samuel Whitty & Michael Evans
  * 
@@ -22,7 +24,9 @@ public class Scheduler extends Thread {
 	private BlockingQueue<Object[]> eoutQueue = null;
 	private BlockingQueue<Object[]> finQueue = null;
 	private BlockingQueue<Object[]> foutQueue = null;
-
+	
+	private SchedulerState state;
+	
 	/*
 	 * Constructor for the scheduler.
 	 */
@@ -34,35 +38,48 @@ public class Scheduler extends Thread {
 		this.foutQueue = foutQueue;
 		this.elevator = elev;
 		this.floor = floor;
+		
+		this.state = SchedulerState.WAITFORREQUEST;
 
 	}
 
 	/*
 	 * This method sends data to the elevator subsystem. Also empties the out queue.
 	 */
-	public synchronized void sendDataToElevator() {
+	public synchronized void receiveFloorData() {
 		try {
 			floor.sendRequest();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Sending Floor out queue to floor in queue");
-		foutQueue.drainTo(einQueue);
+	}
+	
+	public synchronized void sendDataToElevator() {
+		if(!foutQueue.isEmpty()) {
+			foutQueue.drainTo(einQueue);
+			System.out.println("Sending Floor out Queue to Elevator in queue");
+		}
 	}
 
 	/*
 	 * This method sends data to the floor subsystem.
 	 */
-	public synchronized void sendDataToFloor() {
+	public synchronized void receiveElevatorData() {
 		try {
 			elevator.sendRequest();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Sending Elevator out queue to floor in queue");
-		eoutQueue.drainTo(finQueue);
+		
+	}
+	
+	public synchronized void sendDataToFloor() {
+		if (!eoutQueue.isEmpty()) {
+			eoutQueue.drainTo(finQueue);
+			System.out.println("Sending Elevator out queue to floor in queue");
+		}
 	}
 
 	/**
@@ -91,7 +108,7 @@ public class Scheduler extends Thread {
 	 */
 	public synchronized void makeFloorRead(String input) {
 		try {
-			floor.readInput(input);
+			floor.readInput();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,8 +122,23 @@ public class Scheduler extends Thread {
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
 		
+		makeFloorRead("input.txt");
+		receiveFloorData();
+		
+		while (state == SchedulerState.DISPATCHELEVATOR) {
+			sendDataToElevator();
+			state = SchedulerState.WAITFORELEVATOR;
+		}
+		
+		while (state == SchedulerState.WAITFORELEVATOR) {
+			receiveElevatorData();
+			if (!eoutQueue.isEmpty()) {
+				state = SchedulerState.WAITFORREQUEST;
+			}
+		}
+		
 		while (true) {
-			makeFloorRead("input.txt");
+			
 			if(this.dataWaitingFloor()) {
 				sendDataToFloor();
 			}
