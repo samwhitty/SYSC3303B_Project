@@ -77,6 +77,7 @@ public class Scheduler extends Thread {
 			return true;
 		}
 	}
+	
 	public synchronized Boolean dataWaitingeElevator() {
 		if (eoutQueue.isEmpty()) {
 			System.out.println("No data to send.");
@@ -86,17 +87,6 @@ public class Scheduler extends Thread {
 			return true;
 		}
 	}
-	/**
-	 * Sends a filename to the FloorSubsystem for it to read.
-	 */
-	public synchronized void makeFloorRead(String input) {
-		try {
-			floor.readInput(input);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Runs the scheduler.
@@ -104,15 +94,18 @@ public class Scheduler extends Thread {
 	@Override
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
-		
-		while (true) {
-			makeFloorRead("input.txt");
-			if(this.dataWaitingFloor()) {
-				sendDataToFloor();
+		try {
+			while (floor.readInput()) {
+				if(this.dataWaitingFloor()) {
+					sendDataToFloor();
+				}
+				else if(this.dataWaitingeElevator()) {
+					sendDataToElevator();
+				}
 			}
-			else if(this.dataWaitingeElevator()) {
-				sendDataToElevator();
-			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
