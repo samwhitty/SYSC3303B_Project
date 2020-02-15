@@ -18,8 +18,6 @@ public class ElevatorSubsystem implements Runnable {
 	private BlockingQueue<Object[]> receive_queue;
 	private State state;
 	private Object[] data;
-	
-	boolean stop = false;
 
 	public ElevatorSubsystem(BlockingQueue<Object[]> in, BlockingQueue<Object[]> out) {
 		this.receive_queue = in;
@@ -76,7 +74,7 @@ public class ElevatorSubsystem implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Elevator Subsystem running.");
-		while(!stop) {
+		while(true) {
 			if(this.dataRecieved()) {
 				this.receiveRequest();
 			}
