@@ -64,19 +64,13 @@ public class Scheduler extends Thread {
 	
 	public synchronized void sendDataToElevator() {
 
-			Object[] data_to_send = new Object[5];
-			try {
-				data_to_send = from_elevator.take();
-				
-				System.out.println("Sending data to Elevator_in_Queue:");
-				System.out.println("Time: " + data_to_send[0]);
-				System.out.println("Request Floor: " + data_to_send[1]);
-				System.out.println("Request Direction: " + data_to_send[2]);
-				System.out.println("Request Destination" + data_to_send[3]);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
+			to_elevator.add(data);
+			
+			System.out.println("Sending data to Elevator_in_Queue:");
+			System.out.println("Time: " + data[0]);
+			System.out.println("Request Floor: " + data[1]);
+			System.out.println("Request Direction: " + data[2]);
+			System.out.println("Request Destination" + data[3]);	
 	}
 
 	/*
@@ -86,7 +80,8 @@ public class Scheduler extends Thread {
 
 		Object[] return_data = new Object[5];
 		try {
-			return_data = to_elevator.take();
+			return_data = from_elevator.take();
+			from_elevator.clear();
 			
 			System.out.println("Received data from Elevator_out_Queue:");
 			System.out.println("Time: " + return_data[0]);
