@@ -21,7 +21,11 @@ public class ElevatorSubsystem implements Runnable {
 	private Object[] data;
 	private int currentFloor;
 
-	
+	/**
+	 * ElevatorSubsystem Constructor
+	 * @param out
+	 * @param in
+	 */
 	public ElevatorSubsystem(BlockingQueue<Object[]> out, BlockingQueue<Object[]> in) {
 		this.from_scheduler = in;
 		this.to_scheduler = out;
@@ -29,7 +33,7 @@ public class ElevatorSubsystem implements Runnable {
 		this.currentFloor = 1;
 	}
 
-	/*
+	/**
 	 * Sends request.
 	 * Also empties the in queue.
 	 */
@@ -37,7 +41,9 @@ public class ElevatorSubsystem implements Runnable {
 		System.out.println("Placing Data in out Queue");
 		to_scheduler.add(data);
 	}
-	
+	/**
+	 * Receives request 
+	 */
 	public synchronized void receiveRequest() {
 		try {
 			System.out.println("Data Recieved");
@@ -51,7 +57,7 @@ public class ElevatorSubsystem implements Runnable {
 		}
 		
 	}
-	/*
+	/**
 	 * Sends data if possible, stops once it successfully sends data.
 	 */
 	@Override

@@ -14,7 +14,7 @@ import iteration2.SchedulerStateMachine.SchedulerState;
 import util.TimeData;
 
 /**
- * @authors Everett Soldaat & Samuel Whitty
+ * @authors Everett Soldaat & Samuel Whitty & Michael Evans
  *
  */
 public class FloorSubsystem implements Runnable {
@@ -43,6 +43,11 @@ public class FloorSubsystem implements Runnable {
 		}
 	}
 	
+	/**
+	 * FloorSubsystem Constructor
+	 * @param send_q
+	 * @param receive_q
+	 */
 
 	public FloorSubsystem(BlockingQueue<Object[]> send_q, BlockingQueue<Object[]> receive_q) {
 		time = new TimeData();
@@ -55,7 +60,7 @@ public class FloorSubsystem implements Runnable {
 
 	}
 
-	/*
+	/**
 	 * Reads input from file. Should be passed a string with the full filename.
 	 * Works for any plain text file. Must be in format of "HH/MM/SS.S"
 	 */
@@ -80,10 +85,14 @@ public class FloorSubsystem implements Runnable {
 		}
 		return false;
 	}
+	/**
+	 * returns data
+	 * @return
+	 */
 	public Object[] getData() {
 		return data;
 	}
-	/*
+	/**
 	 * Sends data from receive queue to out queue. Also empties the in queue.
 	 */
 	public synchronized void sendRequest() throws InterruptedException {
@@ -96,7 +105,10 @@ public class FloorSubsystem implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Takes data received from 
+	 * scheduler and prints it
+	 */
 	public synchronized void receiveRequest() {
 		Object[] return_data = new Object[5];
 		try {
@@ -114,7 +126,7 @@ public class FloorSubsystem implements Runnable {
 	}
 	
 
-	/*
+	/**
 	 * Sends data if possible, stops once it successfully sends data.
 	 */
 	@Override
@@ -124,7 +136,6 @@ public class FloorSubsystem implements Runnable {
 		while(hasInput) {
 			if(to_scheduler.isEmpty()) {
 				if(Scheduler.getSchedulerState() == SchedulerState.WAITFORREQUEST) {
-					
 					try {
 						hasInput = this.readInput();
 						this.sendRequest();

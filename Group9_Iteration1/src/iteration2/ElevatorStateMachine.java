@@ -11,7 +11,10 @@ public class ElevatorStateMachine {
 	private static Object[] newData = new Object[5];
 
 	public static enum EState {
-
+		/**
+		 * Determines what state to go to
+		 * from the data sent
+		 */
 		WAITING {
 			@Override
 			public EState next(Object[] data) {
@@ -24,6 +27,9 @@ public class ElevatorStateMachine {
 				}
 			}
 		},
+		/**
+		 * Simulates loading into the elevator
+		 */
 		LOADING {
 			@Override
 			public EState next(Object[] data) {
@@ -35,6 +41,9 @@ public class ElevatorStateMachine {
 				}
 			}
 		},
+		/**
+		 * Simulates going up in the elevator
+		 */
 		UP {
 			@Override
 			public EState next(Object[] data) {
@@ -55,6 +64,9 @@ public class ElevatorStateMachine {
 				}
 			}
 		},
+		/**
+		 * Simulates going down
+		 */
 		DOWN {
 			@Override
 			public EState next(Object[] data) {
@@ -76,6 +88,10 @@ public class ElevatorStateMachine {
 
 			}
 		},
+		/**
+		 * Simulates the elevator going up 
+		 * to pick up person
+		 */
 		PICKUP {
 			@Override
 			public EState next(Object[] data) {
@@ -98,6 +114,10 @@ public class ElevatorStateMachine {
 				}
 			}
 		},
+		/**
+		 * Simulates going down to pick up 
+		 * Person
+		 */
 		PICKDOWN {
 			@Override
 			public EState next(Object[] data) {
@@ -119,6 +139,9 @@ public class ElevatorStateMachine {
 				}
 			}
 		},
+		/**
+		 * Simulates Unloading
+		 */
 		UNLOADING {
 			@Override
 			public EState next(Object[] data) {
@@ -126,6 +149,10 @@ public class ElevatorStateMachine {
 				return STOPPED;
 			}
 		},
+		/**
+		 * Simulates elevator
+		 * Stopped after drop off
+		 */
 		STOPPED {
 			@Override
 			public Object[] getData(Object[] data) {
@@ -151,7 +178,4 @@ public class ElevatorStateMachine {
 		}
 	}
 
-	public static void main(String[] args) {
-
-	}
 }

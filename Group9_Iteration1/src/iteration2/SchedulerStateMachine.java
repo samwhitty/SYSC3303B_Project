@@ -18,6 +18,9 @@ public class SchedulerStateMachine extends Scheduler {
 	}
 
 	public static enum SchedulerState{
+		/**
+		 * Waits for request
+		 */
 		WAITFORREQUEST{
 			@Override
 			public SchedulerState next(Object[] data) {
@@ -39,18 +42,30 @@ public class SchedulerStateMachine extends Scheduler {
 				return DISPATCHELEVATOR;
 			}
 		},
+		/**
+		 * State for dispatching 
+		 * data to elevator
+		 */
 		DISPATCHELEVATOR{
 			@Override
 			public SchedulerState next(Object[] data) {
 				return DISPATCHELEVATOR;
 			}
 		},
+		/**
+		 * State for waiting for
+		 * elevator responses
+		 */
 		WAITFORELEVATOR{
 			@Override
 			public SchedulerState next(Object[] data) {
 				return WAITFORELEVATOR;
 			}
 		},
+		/**
+		 * State for invalid 
+		 * Request
+		 */
 		INVALID{
 			@Override
 			public SchedulerState next(Object[] data) {

@@ -26,9 +26,15 @@ public class Scheduler extends Thread {
 	private BlockingQueue<Object[]> to_floor = null;
 
 	private static SchedulerState state;
-
-	/*
+	
+	/**
 	 * Constructor for the scheduler.
+	 * @param einQueue
+	 * @param eoutQueue
+	 * @param finQueue
+	 * @param foutQueue
+	 * @param elev
+	 * @param floor
 	 */
 	public Scheduler(BlockingQueue<Object[]> einQueue, BlockingQueue<Object[]> eoutQueue,
 			BlockingQueue<Object[]> finQueue, BlockingQueue<Object[]> foutQueue, ElevatorSubsystem elev,
@@ -44,14 +50,14 @@ public class Scheduler extends Thread {
 
 	}
 
-	/*
+	/**
 	 * Getter for Scheduler State.
 	 */
 	public static SchedulerState getSchedulerState() {
 		return state;
 	}
 
-	/*
+	/**
 	 * This method receives data from the floor subsystem. Also empties the out
 	 * queue.
 	 */
@@ -65,7 +71,7 @@ public class Scheduler extends Thread {
 		}
 	}
 
-	/*
+	/**
 	 * This method sends data to the floor subsystem, and prints out the data being
 	 * sent.
 	 */
@@ -75,7 +81,7 @@ public class Scheduler extends Thread {
 
 	}
 
-	/*
+	/**
 	 * This method receives data from the elevator subsystem, and prints out the
 	 * data received.
 	 */
@@ -98,7 +104,7 @@ public class Scheduler extends Thread {
 
 	}
 
-	/*
+	/**
 	 * This method sends data to the elevator subsystem, and prints out the data
 	 * sent.
 	 */
