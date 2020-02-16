@@ -56,6 +56,7 @@ proccessed by the elevator.
 - ElevatorStateMachine
 - ElevatorSubsystem changes
 - Floor Subsystem changes
+- Tests
 
 ### Sam
 - Scheduler state machine diagram
@@ -64,10 +65,12 @@ proccessed by the elevator.
 
 ### Said
 - Elevator state machine diagram
+- Class diagram
+- Sequence diagram
 
 ## Deliverables:
 - All Relevent Java Files
 - UML Class diagram: Iteration2_ClassDiagram.png
 - UML Sequence diagram: iteration2_sequence.png
 - SchedulerSubsystem State Machine diagram: SchedulerStateMachineDiagram.png
-- FloorSubsystem State Machine diagram: FloorStateMachineDiagram.png
+- ElevatorSubsystem State Machine diagram:  	elevator_state_machine_diagram.state.violet.html.png
