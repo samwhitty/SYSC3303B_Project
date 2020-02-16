@@ -24,8 +24,8 @@ public class FloorSubsystem implements Runnable {
 	private static String direction;
 	private static int destinationFloor;
 
-	private BlockingQueue<Object[]> to_scheduler_queue;
-	private BlockingQueue<Object[]> from_sheduler_queue;
+	private BlockingQueue<Object[]> to_scheduler;
+	private BlockingQueue<Object[]> from_sheduler;
 
 	private Object[] data =  new Object[5];
 	
@@ -48,8 +48,8 @@ public class FloorSubsystem implements Runnable {
 		floorNum = 0;
 		direction = "Up";
 		destinationFloor = 0;
-		this.to_scheduler_queue = send_q;
-		this.from_sheduler_queue = receive_q;
+		this.to_scheduler = send_q;
+		this.from_sheduler = receive_q;
 		initScanner();
 
 	}
@@ -85,7 +85,7 @@ public class FloorSubsystem implements Runnable {
 		System.out.println("Moving Floor in Queue data to out Queue");
 		//receive_queue.add(data);
 		//receive_queue.drainTo(send_queue);
-		to_scheduler_queue.add(data);
+		to_scheduler.add(data);
 		try {
 			wait(100);
 		} catch (InterruptedException e) {
@@ -97,7 +97,7 @@ public class FloorSubsystem implements Runnable {
 	public synchronized void receiveRequest() {
 		Object[] return_data = new Object[5];
 		try {
-			return_data = from_sheduler_queue.take();
+			return_data = from_sheduler.take();
 			System.out.println("Data received:");
 			System.out.println("Request finished at: " + return_data[0]);
 			System.out.println("Elevator picked passengers at: " + return_data[1]);
@@ -118,7 +118,7 @@ public class FloorSubsystem implements Runnable {
 		System.out.println("Floor Subsystem running.");
 
 		while(true) {
-			if(to_scheduler_queue.isEmpty() && from_sheduler_queue.isEmpty()) {
+			if(to_scheduler.isEmpty() && from_sheduler.isEmpty()) {
 				if(Scheduler.getSchedulerState() == SchedulerState.WAITFORREQUEST) {
 					
 					try {

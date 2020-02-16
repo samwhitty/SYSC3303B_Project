@@ -20,10 +20,10 @@ public class Scheduler extends Thread {
 	private Object[] data = null;
 	private ElevatorSubsystem elevator = null;
 	private FloorSubsystem floor = null;
-	private BlockingQueue<Object[]> einQueue = null;
-	private BlockingQueue<Object[]> eoutQueue = null;
-	private BlockingQueue<Object[]> finQueue = null;
-	private BlockingQueue<Object[]> foutQueue = null;
+	private BlockingQueue<Object[]> from_elevator = null;
+	private BlockingQueue<Object[]> to_elevator = null;
+	private BlockingQueue<Object[]> from_floor = null;
+	private BlockingQueue<Object[]> to_floor = null;
 	
 	private static SchedulerState state;
 	
@@ -32,10 +32,10 @@ public class Scheduler extends Thread {
 	 */
 	public Scheduler(BlockingQueue<Object[]> einQueue, BlockingQueue<Object[]> eoutQueue, BlockingQueue<Object[]> finQueue,
 			BlockingQueue<Object[]> foutQueue, ElevatorSubsystem elev, FloorSubsystem floor) {
-		this.einQueue = einQueue;
-		this.eoutQueue = eoutQueue;
-		this.finQueue = finQueue;
-		this.foutQueue = foutQueue;
+		this.from_elevator = einQueue;
+		this.to_elevator = eoutQueue;
+		this.from_floor = finQueue;
+		this.to_floor = foutQueue;
 		this.elevator = elev;
 		this.floor = floor;
 		
@@ -61,11 +61,11 @@ public class Scheduler extends Thread {
 	}
 	
 	public synchronized void sendDataToElevator() {
-		if(!foutQueue.isEmpty()) {
-			foutQueue.drainTo(einQueue);
+		if(!to_floor.isEmpty()) {
+			to_floor.drainTo(from_elevator);
 			Object[] data_to_send = new Object[5];
 			try {
-				data_to_send = einQueue.take();
+				data_to_send = from_elevator.take();
 				
 				System.out.println("Sending data to Elevator_in_Queue:");
 				System.out.println("Time: " + data_to_send[0]);
@@ -92,7 +92,7 @@ public class Scheduler extends Thread {
 		}
 		Object[] return_data = new Object[5];
 		try {
-			return_data = eoutQueue.take();
+			return_data = to_elevator.take();
 			
 			System.out.println("Received data from Elevator_out_Queue:");
 			System.out.println("Time: " + return_data[0]);
@@ -107,8 +107,8 @@ public class Scheduler extends Thread {
 	}
 	
 	public synchronized void sendDataToFloor() {
-		if (!eoutQueue.isEmpty()) {
-			eoutQueue.drainTo(finQueue);
+		if (!to_elevator.isEmpty()) {
+			to_elevator.drainTo(from_floor);
 			System.out.println("Sending Elevator out queue to floor in queue");
 		}
 	}
@@ -117,7 +117,7 @@ public class Scheduler extends Thread {
 	 * Checks if either of the queues has data to send.
 	 */
 	public synchronized Boolean dataWaitingFloor() {
-		if (foutQueue.isEmpty()) {
+		if (to_floor.isEmpty()) {
 			System.out.println("No data to send.");
 			return false;
 		} else {
@@ -126,7 +126,7 @@ public class Scheduler extends Thread {
 		}
 	}
 	public synchronized Boolean dataWaitingeElevator() {
-		if (eoutQueue.isEmpty()) {
+		if (to_elevator.isEmpty()) {
 			System.out.println("No data to send.");
 			return false;
 		} else {
@@ -143,10 +143,10 @@ public class Scheduler extends Thread {
 		System.out.println("Scheduler subsystem running.");
 		
 		while(true) {
-			if (!finQueue.isEmpty()) {
+			if (!from_floor.isEmpty()) {
 				try {
-					data = finQueue.take();
-					finQueue.clear();
+					data = from_floor.take();
+					from_floor.clear();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -160,7 +160,7 @@ public class Scheduler extends Thread {
 			
 			while (state == SchedulerState.WAITFORELEVATOR) {
 				receiveElevatorData();
-				if (!eoutQueue.isEmpty()) {
+				if (!to_elevator.isEmpty()) {
 					state = SchedulerState.WAITFORREQUEST;
 				}
 			}
@@ -175,13 +175,13 @@ public class Scheduler extends Thread {
 	 * Main Method.
 	 */
 	public static void main(String[] args) {
-		BlockingQueue<Object[]> floor_in_queue = new ArrayBlockingQueue<>(10);
-		BlockingQueue<Object[]> floor_out_queue = new ArrayBlockingQueue<>(10);
-		BlockingQueue<Object[]> elev_in_queue = new ArrayBlockingQueue<>(10);
-		BlockingQueue<Object[]> elev_out_queue = new ArrayBlockingQueue<>(10);
-		FloorSubsystem floor = new FloorSubsystem(floor_in_queue, floor_out_queue);
-		ElevatorSubsystem elevator = new ElevatorSubsystem(elev_in_queue, elev_out_queue);
-		Scheduler scheduler = new Scheduler(elev_in_queue, elev_out_queue, floor_in_queue, floor_out_queue, elevator,
+		BlockingQueue<Object[]> from_floor = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Object[]> to_floor = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Object[]> from_elevator = new ArrayBlockingQueue<>(10);
+		BlockingQueue<Object[]> to_elevator = new ArrayBlockingQueue<>(10);
+		FloorSubsystem floor = new FloorSubsystem(from_floor, to_floor);
+		ElevatorSubsystem elevator = new ElevatorSubsystem(from_elevator, to_elevator);
+		Scheduler scheduler = new Scheduler(from_elevator, to_elevator, from_floor, to_floor, elevator,
 				floor);
 
 		new Thread(floor).start();
