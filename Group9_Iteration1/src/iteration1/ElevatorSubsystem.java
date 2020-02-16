@@ -18,14 +18,13 @@ public class ElevatorSubsystem implements Runnable {
 	private BlockingQueue<Object[]> send_queue;
 	private BlockingQueue<Object[]> receive_queue;
 	private EState state;
-	private Object[] data = new Object[5];
+	private Object[] data;
 	private int currentFloor;
 
 	public ElevatorSubsystem(BlockingQueue<Object[]> in, BlockingQueue<Object[]> out) {
 		this.receive_queue = in;
 		this.send_queue = out;
 		this.state = EState.WAITING;
-		this.data[4] = 1;
 		this.currentFloor = 1;
 	}
 
@@ -38,43 +37,14 @@ public class ElevatorSubsystem implements Runnable {
 		receive_queue.drainTo(send_queue);
 		receive_queue.clear();
 	}
-	public void setData(Object[] data) {
-		this.data = data;
-	}
-	/*
-	 * Checks if it can send data.
-	 */
-	public synchronized Boolean canSend() {
-		if (!send_queue.isEmpty()) {
-			return true;
-		}
-		try {
-			this.wait(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Can not print.");
-		return false;
-	}
 	
-	public synchronized boolean dataRecieved() {
-		if(receive_queue.isEmpty()) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
 	public synchronized void receiveRequest() {
 		try {
 			data = receive_queue.take();
+			receive_queue.clear();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		while(!state.equals(EState.STOPPED)) {
-			state = state.next(data);
 		}
 		
 	}
@@ -85,8 +55,9 @@ public class ElevatorSubsystem implements Runnable {
 	public void run() {
 		System.out.println("Elevator Subsystem running.");
 		while(true) {
-			if(this.dataRecieved()) {
+			if(!receive_queue.isEmpty()) {
 				this.receiveRequest();
+				
 			}
 		}
 		
