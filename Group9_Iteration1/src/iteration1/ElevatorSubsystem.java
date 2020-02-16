@@ -19,6 +19,7 @@ public class ElevatorSubsystem implements Runnable {
 	private BlockingQueue<Object[]> receive_queue;
 	private EState state;
 	private Object[] data = new Object[5];
+	private boolean floorReached = false;
 
 	public ElevatorSubsystem(BlockingQueue<Object[]> in, BlockingQueue<Object[]> out) {
 		this.receive_queue = in;
@@ -74,6 +75,9 @@ public class ElevatorSubsystem implements Runnable {
 			state = state.next(data);
 		}
 		
+	}
+	public boolean floorReached() {
+		return this.floorReached;
 	}
 	/*
 	 * Sends data if possible, stops once it successfully sends data.
