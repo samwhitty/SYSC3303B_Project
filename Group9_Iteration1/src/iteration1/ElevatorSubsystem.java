@@ -32,15 +32,15 @@ public class ElevatorSubsystem implements Runnable {
 	 * Sends request.
 	 * Also empties the in queue.
 	 */
-	public synchronized void sendRequest() throws InterruptedException {
-		System.out.println("Moving Elevator in Queue data to out Queue");
-		receive_queue.drainTo(send_queue);
-		receive_queue.clear();
+	public synchronized void sendRequest() {
+		send_queue.add(data);
+		
 	}
 	
 	public synchronized void receiveRequest() {
 		try {
 			data = receive_queue.take();
+			data[4] = currentFloor;
 			receive_queue.clear();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -57,7 +57,12 @@ public class ElevatorSubsystem implements Runnable {
 		while(true) {
 			if(!receive_queue.isEmpty()) {
 				this.receiveRequest();
-				
+				while(state != EState.STOPPED) {
+					state = state.next(data);
+				}
+				this.data = state.getData(data);
+				currentFloor = (int) data[4];
+				this.sendRequest();
 			}
 		}
 		
