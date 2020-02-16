@@ -63,6 +63,8 @@ public class Scheduler extends Thread {
 	 */
 	public synchronized void receiveFloorData() {
 		try {
+			System.out.println("Recieved Floor Data");
+			System.out.println();
 			data = from_floor.take();
 			from_floor.clear();
 		} catch (InterruptedException e) {
@@ -95,8 +97,9 @@ public class Scheduler extends Thread {
 			System.out.println("Time: " + data[0]);
 			System.out.println("Pasengers picked up from Floor: " + data[1]);
 			System.out.println("Elevator Direction: " + data[2]);
-			System.out.println("Elevator Destination" + data[3]);
-			System.out.println("Elevator Current Floor" + data[4]);
+			System.out.println("Elevator Destination " + data[3]);
+			System.out.println("Elevator Current Floor " + data[4]);
+			System.out.println();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,7 +119,8 @@ public class Scheduler extends Thread {
 		System.out.println("Time: " + data[0]);
 		System.out.println("Request Floor: " + data[1]);
 		System.out.println("Request Direction: " + data[2]);
-		System.out.println("Request Destination" + data[3]);
+		System.out.println("Request Destination " + data[3]);
+		System.out.println();
 	}
 
 	/**

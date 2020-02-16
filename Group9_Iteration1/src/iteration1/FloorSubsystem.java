@@ -67,9 +67,9 @@ public class FloorSubsystem implements Runnable {
 	public synchronized boolean readInput() throws IOException {
 		s.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d) (\\d) ([a-zA-Z]+) (\\d)");
 		MatchResult result = s.match();
-		System.out.println(result.group(1));
 		time = new TimeData(result.group(1));
-		System.out.println("Line : " + time);
+		System.out.println("Line : " + time + " Read");
+		System.out.println();
 		floorNum = Integer.parseInt(result.group(2));
 		direction = result.group(3);
 		destinationFloor = Integer.parseInt(result.group(4));
@@ -97,6 +97,7 @@ public class FloorSubsystem implements Runnable {
 	 */
 	public synchronized void sendRequest() throws InterruptedException {
 		System.out.println("Moving Floor Data to out Queue");
+		System.out.println();
 		to_scheduler.add(data);
 		try {
 			wait(100);
@@ -118,6 +119,7 @@ public class FloorSubsystem implements Runnable {
 			System.out.println("Request finished at: " + return_data[0]);
 			System.out.println("Elevator picked passengers at: " + return_data[1]);
 			System.out.println("Elevator arrived at: " + return_data[3]);
+			System.out.println();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -132,6 +134,7 @@ public class FloorSubsystem implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Floor Subsystem running.");
+		System.out.println();
 		boolean hasInput = true;
 		while(hasInput) {
 			if(to_scheduler.isEmpty()) {
