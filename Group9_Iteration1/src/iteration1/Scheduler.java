@@ -30,8 +30,8 @@ public class Scheduler extends Thread {
 	/*
 	 * Constructor for the scheduler.
 	 */
-	public Scheduler(BlockingQueue<Object[]> einQueue, BlockingQueue<Object[]> eoutQueue, BlockingQueue<Object[]> foutQueue,
-			BlockingQueue<Object[]> finQueue, ElevatorSubsystem elev, FloorSubsystem floor) {
+	public Scheduler(BlockingQueue<Object[]> einQueue, BlockingQueue<Object[]> eoutQueue, BlockingQueue<Object[]> finQueue,
+			BlockingQueue<Object[]> foutQueue, ElevatorSubsystem elev, FloorSubsystem floor) {
 		this.einQueue = einQueue;
 		this.eoutQueue = eoutQueue;
 		this.finQueue = finQueue;
@@ -63,7 +63,7 @@ public class Scheduler extends Thread {
 	public synchronized void sendDataToElevator() {
 		if(!foutQueue.isEmpty()) {
 			foutQueue.drainTo(einQueue);
-			Object[] data_to_send = new Object[4];
+			Object[] data_to_send = new Object[5];
 			try {
 				data_to_send = einQueue.take();
 				
@@ -143,6 +143,15 @@ public class Scheduler extends Thread {
 		System.out.println("Scheduler subsystem running.");
 		
 		while(true) {
+			if (!finQueue.isEmpty()) {
+				try {
+					data = finQueue.take();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			if (state == SchedulerState.DISPATCHELEVATOR) {
 				sendDataToElevator();
 				state = SchedulerState.WAITFORELEVATOR;
@@ -169,8 +178,8 @@ public class Scheduler extends Thread {
 		BlockingQueue<Object[]> floor_out_queue = new ArrayBlockingQueue<>(10);
 		BlockingQueue<Object[]> elev_in_queue = new ArrayBlockingQueue<>(10);
 		BlockingQueue<Object[]> elev_out_queue = new ArrayBlockingQueue<>(10);
-		FloorSubsystem floor = new FloorSubsystem(floor_out_queue, floor_in_queue);
-		ElevatorSubsystem elevator = new ElevatorSubsystem(elev_out_queue, elev_in_queue);
+		FloorSubsystem floor = new FloorSubsystem(floor_in_queue, floor_out_queue);
+		ElevatorSubsystem elevator = new ElevatorSubsystem(elev_in_queue, elev_out_queue);
 		Scheduler scheduler = new Scheduler(elev_in_queue, elev_out_queue, floor_in_queue, floor_out_queue, elevator,
 				floor);
 
