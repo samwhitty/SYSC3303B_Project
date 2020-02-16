@@ -119,9 +119,14 @@ public class FloorSubsystem implements Runnable {
 		while(true) {
 			if(send_queue.isEmpty() && receive_queue.isEmpty()) {
 				if(Scheduler.getSchedulerState() == SchedulerState.WAITFORREQUEST) {
+					
 					try {
+						readInput();
 						sendRequest();
 					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
