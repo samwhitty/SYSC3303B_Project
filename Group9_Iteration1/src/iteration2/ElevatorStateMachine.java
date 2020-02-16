@@ -131,8 +131,9 @@ public class ElevatorStateMachine {
 			public Object[] getData(Object[] data) {
 				newData = data;
 				TimeData time = (TimeData) newData[0];
+				System.out.println(travelTime);
 				time.setSec(travelTime);
-				travelTime = 0;
+				String newtime = "" + time.hour() + ":" + time.hour
 				newData[0] = (TimeData) time;
 				newData[4] = (int) newData[3];
 				return newData;

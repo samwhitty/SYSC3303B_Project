@@ -68,8 +68,6 @@ public class ElevatorSubsystem implements Runnable {
 				this.sendRequest();
 				state = EState.WAITING;
 			}
-			
 		}
-		
 	}
 }

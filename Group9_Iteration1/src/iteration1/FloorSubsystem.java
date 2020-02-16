@@ -62,6 +62,7 @@ public class FloorSubsystem implements Runnable {
 	public synchronized boolean readInput() throws IOException {
 		s.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d) (\\d) ([a-zA-Z]+) (\\d)");
 		MatchResult result = s.match();
+		System.out.println(result.group(1));
 		time = new TimeData(result.group(1));
 		System.out.println("Line : " + time);
 		floorNum = Integer.parseInt(result.group(2));
