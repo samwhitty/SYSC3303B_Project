@@ -25,7 +25,7 @@ public class FloorSubsystem implements Runnable {
 	private static int destinationFloor;
 
 	private BlockingQueue<Object[]> to_scheduler;
-	private BlockingQueue<Object[]> from_sheduler;
+	private BlockingQueue<Object[]> from_scheduler;
 	
 
 	private Object[] data =  new Object[5];
@@ -50,7 +50,7 @@ public class FloorSubsystem implements Runnable {
 		direction = "Up";
 		destinationFloor = 0;
 		this.to_scheduler = send_q;
-		this.from_sheduler = receive_q;
+		this.from_scheduler = receive_q;
 		initScanner();
 
 	}
@@ -71,6 +71,7 @@ public class FloorSubsystem implements Runnable {
 		data[1] = floorNum;
 		data[2] = direction;
 		data[3] = destinationFloor;
+		data[4] = 0;
 		if (s.hasNext()) {
 			s.nextLine();
 			return true;
@@ -83,9 +84,7 @@ public class FloorSubsystem implements Runnable {
 	 * Sends data from receive queue to out queue. Also empties the in queue.
 	 */
 	public synchronized void sendRequest() throws InterruptedException {
-		System.out.println("Moving Floor in Queue data to out Queue");
-		//receive_queue.add(data);
-		//receive_queue.drainTo(send_queue);
+		System.out.println("Moving Floor Data to out Queue");
 		to_scheduler.add(data);
 		try {
 			wait(100);
@@ -98,7 +97,8 @@ public class FloorSubsystem implements Runnable {
 	public synchronized void receiveRequest() {
 		Object[] return_data = new Object[5];
 		try {
-			return_data = from_sheduler.take();
+			return_data = from_scheduler.take();
+			from_scheduler.clear();
 			System.out.println("Data received:");
 			System.out.println("Request finished at: " + return_data[0]);
 			System.out.println("Elevator picked passengers at: " + return_data[1]);
@@ -119,12 +119,12 @@ public class FloorSubsystem implements Runnable {
 		System.out.println("Floor Subsystem running.");
 
 		while(true) {
-			if(to_scheduler.isEmpty() && from_sheduler.isEmpty()) {
+			if(to_scheduler.isEmpty()) {
 				if(Scheduler.getSchedulerState() == SchedulerState.WAITFORREQUEST) {
 					
 					try {
-						readInput();
-						sendRequest();
+						this.readInput();
+						this.sendRequest();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -133,6 +133,9 @@ public class FloorSubsystem implements Runnable {
 						e.printStackTrace();
 					}
 				}
+			}
+			else if(!from_scheduler.isEmpty()) {
+				this.receiveRequest();
 			}
 		}
 

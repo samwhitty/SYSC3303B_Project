@@ -34,11 +34,14 @@ public class ElevatorSubsystem implements Runnable {
 	 * Also empties the in queue.
 	 */
 	public synchronized void sendRequest() {
+		System.out.println("Placing Data in out Queue");
 		to_scheduler.add(data);
 	}
 	
 	public synchronized void receiveRequest() {
 		try {
+			System.out.println("Data Recieved");
+			System.out.println("Taking Data from in Queue");
 			data = from_scheduler.take();
 			data[4] = currentFloor;
 			from_scheduler.clear();
@@ -63,7 +66,9 @@ public class ElevatorSubsystem implements Runnable {
 				this.data = state.getData(data);
 				currentFloor = (int) data[4];
 				this.sendRequest();
+				state = EState.WAITING;
 			}
+			
 		}
 		
 	}
