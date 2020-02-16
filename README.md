@@ -9,21 +9,21 @@ Said Omar               (GitHub saidsheikhomar) (Student ID: 101004648)
 
 # Iteration 2:
 
-02/15/2020
+Due: 02/15/2020
 
-## Relevant Files:
+# Relevant Files:
 
-/src/iteration1
+##/src/iteration1
 
-## ElevatorSubsystem: 
+### ElevatorSubsystem: 
 
 - Recieves information from the scheduler provided by the FloorSubsystem and sends it back to the scheduler.
 
-## FloorSubsystem: 
+### FloorSubsystem: 
 
 - Reads from an input file and sends instructions to the schedular by using a queue. Changes state based on the
 
-## Scheduler:
+### Scheduler:
 
 - Takes information from the Floor queue and moves it to the Elevator queue to be 
 proccessed by the elevator. 
