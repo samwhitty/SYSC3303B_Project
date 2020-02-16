@@ -68,10 +68,9 @@ public class Scheduler extends Thread {
 	 * This method sends data to the floor subsystem, and prints out the data being sent.
 	 */
 	public synchronized void sendDataToFloor() {
-		if (!to_elevator.isEmpty()) {
-			to_elevator.drainTo(from_floor);
-			System.out.println("Sending Elevator out queue to floor in queue");
-		}
+		System.out.println("Sending data to floor");
+		to_floor.add(data);
+		
 	}
 
 	/*
@@ -79,16 +78,16 @@ public class Scheduler extends Thread {
 	 */
 	public synchronized void receiveElevatorData() {
 
-		Object[] return_data = new Object[5];
 		try {
-			return_data = from_elevator.take();
+			data = from_elevator.take();
 			from_elevator.clear();
 			
 			System.out.println("Received data from Elevator_out_Queue:");
-			System.out.println("Time: " + return_data[0]);
-			System.out.println("Pasengers picked up from Floor: " + return_data[1]);
-			System.out.println("Elevator Direction: " + return_data[2]);
-			System.out.println("Elevator Destination" + return_data[3]);
+			System.out.println("Time: " + data[0]);
+			System.out.println("Pasengers picked up from Floor: " + data[1]);
+			System.out.println("Elevator Direction: " + data[2]);
+			System.out.println("Elevator Destination" + data[3]);
+			System.out.println("Elevator Current Floor" + data[4]);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,6 +120,7 @@ public class Scheduler extends Thread {
 		while(true) {
 			if (!from_floor.isEmpty()) {
 				receiveFloorData();
+				state = state.next(data);
 			}
 			
 			if (state == SchedulerState.DISPATCHELEVATOR) {
@@ -129,12 +129,15 @@ public class Scheduler extends Thread {
 			}
 			
 			while (state == SchedulerState.WAITFORELEVATOR) {
-				receiveElevatorData();
+				if(!from_elevator.isEmpty()) {
+					this.receiveElevatorData();
+					this.sendDataToFloor();
+				}
 				if (!to_elevator.isEmpty()) {
 					state = SchedulerState.WAITFORREQUEST;
 				}
 			}
-			state.next(data);
+			
 		}
 		
 		
