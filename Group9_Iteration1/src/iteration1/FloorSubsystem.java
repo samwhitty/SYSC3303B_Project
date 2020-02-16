@@ -82,8 +82,9 @@ public class FloorSubsystem implements Runnable {
 	 */
 	public synchronized void sendRequest() throws InterruptedException {
 		System.out.println("Moving Floor in Queue data to out Queue");
-		receive_queue.add(data);
-		receive_queue.drainTo(send_queue);
+		//receive_queue.add(data);
+		//receive_queue.drainTo(send_queue);
+		send_queue.add(data);
 		try {
 			wait(100);
 		} catch (InterruptedException e) {
@@ -93,7 +94,18 @@ public class FloorSubsystem implements Runnable {
 	}
 
 	public synchronized void receiveRequest() {
-		send_queue.drainTo(receive_queue);
+		Object[] return_data = new Object[5];
+		try {
+			return_data = receive_queue.take();
+			System.out.println("Data received:");
+			System.out.println("Request finished at: " + return_data[0]);
+			System.out.println("Elevator picked passengers at: " + return_data[1]);
+			System.out.println("Elevator arrived at: " + return_data[3]);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 	
 
