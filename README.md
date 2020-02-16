@@ -48,15 +48,19 @@ proccessed by the elevator.
 ## Tasks:
 
 ### Everett
-- Scheduler state machine
+- SchedulerStateMachine
+- Scheduler changes
+- Floor Subsystem changes
 
 ### Michael
-- Elevator state machine
+- ElevatorStateMachine
+- ElevatorSubsystem changes
+- Floor Subsystem changes
 
 ### Sam
 - Scheduler state machine diagram
 - README.md / README.txt
-- TimeData changes
+- TimeData
 
 ### Said
 - Elevator state machine diagram
