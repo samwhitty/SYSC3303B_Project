@@ -158,7 +158,6 @@ public class Scheduler extends Thread {
 		new Thread(floor).start();
 		new Thread(elevator).start();
 		new Thread(scheduler).start();
-
 	}
 
 }
