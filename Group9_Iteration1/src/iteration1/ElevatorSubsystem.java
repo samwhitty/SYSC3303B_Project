@@ -15,15 +15,15 @@ import util.TimeData;
  */
 public class ElevatorSubsystem implements Runnable {
 
-	private BlockingQueue<Object[]> send_queue;
-	private BlockingQueue<Object[]> receive_queue;
+	private BlockingQueue<Object[]> to_scheduler;
+	private BlockingQueue<Object[]> from_scheduler;
 	private EState state;
 	private Object[] data;
 	private int currentFloor;
 
-	public ElevatorSubsystem(BlockingQueue<Object[]> in, BlockingQueue<Object[]> out) {
-		this.receive_queue = in;
-		this.send_queue = out;
+	public ElevatorSubsystem(BlockingQueue<Object[]> out, BlockingQueue<Object[]> in) {
+		this.from_scheduler = in;
+		this.to_scheduler = out;
 		this.state = EState.WAITING;
 		this.currentFloor = 1;
 	}
@@ -33,15 +33,14 @@ public class ElevatorSubsystem implements Runnable {
 	 * Also empties the in queue.
 	 */
 	public synchronized void sendRequest() {
-		send_queue.add(data);
-		
+		to_scheduler.add(data);
 	}
 	
 	public synchronized void receiveRequest() {
 		try {
-			data = receive_queue.take();
+			data = from_scheduler.take();
 			data[4] = currentFloor;
-			receive_queue.clear();
+			from_scheduler.clear();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,7 +54,7 @@ public class ElevatorSubsystem implements Runnable {
 	public void run() {
 		System.out.println("Elevator Subsystem running.");
 		while(true) {
-			if(!receive_queue.isEmpty()) {
+			if(!from_scheduler.isEmpty()) {
 				this.receiveRequest();
 				while(state != EState.STOPPED) {
 					state = state.next(data);
