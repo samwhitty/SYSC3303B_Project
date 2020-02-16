@@ -17,7 +17,7 @@ import iteration2.SchedulerStateMachine.SchedulerState;
  * 
  */
 public class Scheduler extends Thread {
-	private ButtonDataStruct data = null;
+	private Object[] data = null;
 	private ElevatorSubsystem elevator = null;
 	private FloorSubsystem floor = null;
 	private BlockingQueue<Object[]> einQueue = null;
@@ -63,7 +63,20 @@ public class Scheduler extends Thread {
 	public synchronized void sendDataToElevator() {
 		if(!foutQueue.isEmpty()) {
 			foutQueue.drainTo(einQueue);
-			System.out.println("Sending Floor out Queue to Elevator in queue");
+			Object[] data_to_send = new Object[4];
+			try {
+				data_to_send = einQueue.take();
+				
+				System.out.println("Sending data to Elevator_in_Queue:");
+				System.out.println("Time: " + data_to_send[0]);
+				System.out.println("Request Floor: " + data_to_send[1]);
+				System.out.println("Request Direction: " + data_to_send[2]);
+				System.out.println("Request Destination" + data_to_send[3]);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 
@@ -73,6 +86,19 @@ public class Scheduler extends Thread {
 	public synchronized void receiveElevatorData() {
 		try {
 			elevator.sendRequest();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Object[] return_data = new Object[5];
+		try {
+			return_data = eoutQueue.take();
+			
+			System.out.println("Received data from Elevator_out_Queue:");
+			System.out.println("Time: " + return_data[0]);
+			System.out.println("Pasengers picked up from Floor: " + return_data[1]);
+			System.out.println("Elevator Direction: " + return_data[2]);
+			System.out.println("Elevator Destination" + return_data[3]);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,19 +142,22 @@ public class Scheduler extends Thread {
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
 		
-
-		
-		while (state == SchedulerState.DISPATCHELEVATOR) {
-			sendDataToElevator();
-			state = SchedulerState.WAITFORELEVATOR;
-		}
-		
-		while (state == SchedulerState.WAITFORELEVATOR) {
-			receiveElevatorData();
-			if (!eoutQueue.isEmpty()) {
-				state = SchedulerState.WAITFORREQUEST;
+		while(true) {
+			if (state == SchedulerState.DISPATCHELEVATOR) {
+				sendDataToElevator();
+				state = SchedulerState.WAITFORELEVATOR;
 			}
+			
+			while (state == SchedulerState.WAITFORELEVATOR) {
+				receiveElevatorData();
+				if (!eoutQueue.isEmpty()) {
+					state = SchedulerState.WAITFORREQUEST;
+				}
+			}
+			state.next(data);
 		}
+		
+		
 		
 	}
 
