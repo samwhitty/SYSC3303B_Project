@@ -48,6 +48,7 @@ public class ElevatorSubsystem implements Runnable {
 		try {
 			System.out.println("Data Recieved");
 			System.out.println("Taking Data from in Queue");
+			System.out.println();
 			data = from_scheduler.take();
 			data[4] = currentFloor;
 			from_scheduler.clear();

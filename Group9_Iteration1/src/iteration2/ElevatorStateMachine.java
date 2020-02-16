@@ -158,10 +158,8 @@ public class ElevatorStateMachine {
 			public Object[] getData(Object[] data) {
 				newData = data;
 				TimeData time = (TimeData) newData[0];
-				System.out.println(travelTime);
 				time.setSec(travelTime);
 				String newtime = time.toString();
-				System.out.println(newtime);
 				newData[0] = (TimeData) time;
 				newData[4] = (int) newData[3];
 				return newData;
