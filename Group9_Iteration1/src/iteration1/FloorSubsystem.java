@@ -42,7 +42,7 @@ public class FloorSubsystem implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	
 
 	public FloorSubsystem(BlockingQueue<Object[]> send_q, BlockingQueue<Object[]> receive_q) {
 		time = new TimeData();
@@ -80,7 +80,9 @@ public class FloorSubsystem implements Runnable {
 		}
 		return false;
 	}
-
+	public Object[] getData() {
+		return data;
+	}
 	/*
 	 * Sends data from receive queue to out queue. Also empties the in queue.
 	 */
