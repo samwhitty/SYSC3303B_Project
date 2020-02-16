@@ -145,8 +145,10 @@ public class Scheduler extends Thread {
 		BlockingQueue<Object[]> to_floor = new ArrayBlockingQueue<>(10);
 		BlockingQueue<Object[]> from_elevator = new ArrayBlockingQueue<>(10);
 		BlockingQueue<Object[]> to_elevator = new ArrayBlockingQueue<>(10);
+		
 		FloorSubsystem floor = new FloorSubsystem(from_floor, to_floor);
 		ElevatorSubsystem elevator = new ElevatorSubsystem(from_elevator, to_elevator);
+		
 		Scheduler scheduler = new Scheduler(from_elevator, to_elevator, from_floor, to_floor, elevator,
 				floor);
 
