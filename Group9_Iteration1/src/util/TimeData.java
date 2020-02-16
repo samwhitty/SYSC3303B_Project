@@ -37,7 +37,7 @@ public class TimeData {
 				sec -= 1000;
 			}
 			this.second = (int) sec;
-			setMil((int) (sec - secon) * 1000);
+			this.millisecond += (int) (sec - secon) * 1000;
 		} else {
 			this.millisecond += (int) (sec - secon) * 1000;
 			this.second = (int) Math.floor(sec);
