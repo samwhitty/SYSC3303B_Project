@@ -63,7 +63,7 @@ public class Scheduler extends Thread {
 	public synchronized void sendDataToElevator() {
 		if(!foutQueue.isEmpty()) {
 			foutQueue.drainTo(einQueue);
-			Object[] data_to_send = new Object[4];
+			Object[] data_to_send = new Object[5];
 			try {
 				data_to_send = einQueue.take();
 				
@@ -143,7 +143,14 @@ public class Scheduler extends Thread {
 		System.out.println("Scheduler subsystem running.");
 		
 		while(true) {
-			if (!floor_out_queue())
+			if (!finQueue.isEmpty()) {
+				try {
+					data = finQueue.take();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			
 			if (state == SchedulerState.DISPATCHELEVATOR) {
 				sendDataToElevator();
