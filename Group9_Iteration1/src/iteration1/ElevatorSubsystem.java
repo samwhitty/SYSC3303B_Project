@@ -21,6 +21,7 @@ public class ElevatorSubsystem implements Runnable {
 	private Object[] data;
 	private int currentFloor;
 
+	
 	public ElevatorSubsystem(BlockingQueue<Object[]> out, BlockingQueue<Object[]> in) {
 		this.from_scheduler = in;
 		this.to_scheduler = out;

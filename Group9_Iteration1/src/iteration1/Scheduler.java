@@ -27,6 +27,7 @@ public class Scheduler extends Thread {
 	
 	private static SchedulerState state;
 	
+	
 	/*
 	 * Constructor for the scheduler.
 	 */
