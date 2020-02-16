@@ -43,14 +43,16 @@ public class Scheduler extends Thread {
 		this.state = SchedulerState.WAITFORREQUEST;
 
 	}
-	
+	/*
+	 * Getter for Scheduler State.
+	 */
 	public static SchedulerState getSchedulerState() {
 		return state;
 	}
 	
 
 	/*
-	 * This method sends data to the elevator subsystem. Also empties the out queue.
+	 * This method receives data from the floor subsystem. Also empties the out queue.
 	 */
 	public synchronized void receiveFloorData() {
 		try {
@@ -62,19 +64,18 @@ public class Scheduler extends Thread {
 		}
 	}
 	
-	public synchronized void sendDataToElevator() {
-
-			to_elevator.add(data);
-			
-			System.out.println("Sending data to Elevator_in_Queue:");
-			System.out.println("Time: " + data[0]);
-			System.out.println("Request Floor: " + data[1]);
-			System.out.println("Request Direction: " + data[2]);
-			System.out.println("Request Destination" + data[3]);	
+	/*
+	 * This method sends data to the floor subsystem, and prints out the data being sent.
+	 */
+	public synchronized void sendDataToFloor() {
+		if (!to_elevator.isEmpty()) {
+			to_elevator.drainTo(from_floor);
+			System.out.println("Sending Elevator out queue to floor in queue");
+		}
 	}
 
 	/*
-	 * This method sends data to the floor subsystem.
+	 * This method receives data from the elevator subsystem, and prints out the data received.
 	 */
 	public synchronized void receiveElevatorData() {
 
@@ -95,12 +96,20 @@ public class Scheduler extends Thread {
 		
 	}
 	
-	public synchronized void sendDataToFloor() {
-		if (!to_elevator.isEmpty()) {
-			to_elevator.drainTo(from_floor);
-			System.out.println("Sending Elevator out queue to floor in queue");
-		}
+	/*
+	 * This method sends data to the elevator subsystem, and prints out the data sent.
+	 */
+	public synchronized void sendDataToElevator() {
+
+			to_elevator.add(data);
+			
+			System.out.println("Sending data to Elevator_in_Queue:");
+			System.out.println("Time: " + data[0]);
+			System.out.println("Request Floor: " + data[1]);
+			System.out.println("Request Direction: " + data[2]);
+			System.out.println("Request Destination" + data[3]);	
 	}
+	
 
 	/**
 	 * Runs the scheduler.
