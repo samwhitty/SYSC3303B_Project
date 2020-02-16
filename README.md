@@ -41,21 +41,26 @@ proccessed by the elevator.
 ## /src/util
 
 ### TimeData:
+- A data structure used to transmit the times that a request is sent, used by the state machines and subsystems for uniform data transfer. Also provides utility functions to ensure accurate times.
 
 ### All other classes ( found in /src and /src/util folders) are for the next iteration or previous iteration.
 
 ## Tasks:
 
 ### Everett
-- Scheduler state machine
+- SchedulerStateMachine
+- Scheduler changes
+- Floor Subsystem changes
 
 ### Michael
-- Elevator state machine
+- ElevatorStateMachine
+- ElevatorSubsystem changes
+- Floor Subsystem changes
 
 ### Sam
 - Scheduler state machine diagram
-- README
-- TimeData changes
+- README.md / README.txt
+- TimeData
 
 ### Said
 - Elevator state machine diagram
