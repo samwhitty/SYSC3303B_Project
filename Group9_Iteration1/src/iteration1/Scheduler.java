@@ -46,6 +46,7 @@ public class Scheduler extends Thread {
 	public static SchedulerState getSchedulerState() {
 		return state;
 	}
+	
 
 	/*
 	 * This method sends data to the elevator subsystem. Also empties the out queue.
@@ -107,17 +108,6 @@ public class Scheduler extends Thread {
 			return true;
 		}
 	}
-	/**
-	 * Sends a filename to the FloorSubsystem for it to read.
-	 */
-	public synchronized void makeFloorRead() {
-		try {
-			floor.readInput();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Runs the scheduler.
@@ -126,8 +116,7 @@ public class Scheduler extends Thread {
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
 		
-		makeFloorRead();
-		receiveFloorData(); //Maybe in floor instead
+
 		
 		while (state == SchedulerState.DISPATCHELEVATOR) {
 			sendDataToElevator();
@@ -141,15 +130,6 @@ public class Scheduler extends Thread {
 			}
 		}
 		
-		while (true) {
-			
-			if(this.dataWaitingFloor()) {
-				sendDataToFloor();
-			}
-			else if(this.dataWaitingeElevator()) {
-				sendDataToElevator();
-			}
-		}
 	}
 
 	/**
