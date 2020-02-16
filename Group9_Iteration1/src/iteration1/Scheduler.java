@@ -146,6 +146,7 @@ public class Scheduler extends Thread {
 			if (!finQueue.isEmpty()) {
 				try {
 					data = finQueue.take();
+					finQueue.clear();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
