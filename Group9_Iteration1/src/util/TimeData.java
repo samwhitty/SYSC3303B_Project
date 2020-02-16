@@ -17,47 +17,52 @@ public class TimeData {
 
 	public void setHour(int hr) {
 		this.hour = hr;
-		updateTimeString();
 	}
-	
 
 	public void setMin(int min) {
 		this.minute = min % 60;
 		this.hour += (int) Math.floor(min / 60);
-		updateTimeString();
 	}
 
 	// Sets Seconds, but also checks if there is 60 or more seconds
 	public void setSec(double sec) {
 		double secon = Math.floor(sec);
+		double sec2 = sec;
 		if (sec >= 60) {
-			this.hour += sec % 360;
-			this.minute += sec % 60;
+			this.hour += sec / 3600;
+			while (sec > 3600) {
+				sec -= 3600;
+			}
+			this.minute += (sec - (Math.floor(sec / 3600) *3600)) / 60;
 			while (sec > 60) {
-				sec -= 1000;
+				sec -= 60;
 			}
 			this.second = (int) sec;
-			this.millisecond += (int) (sec - secon) * 1000;
+			setMil((int) Math.round((sec2 - secon) * 1000));
 		} else {
 			this.millisecond += (int) (sec - secon) * 1000;
 			this.second = (int) Math.floor(sec);
 		}
-		updateTimeString();
 	}
 
 	public void setMil(int mil) {
-		if (mil > 1000) {
-			this.hour += mil % 3600000;
-			this.minute += mil % 60000;
-			this.second += mil % 1000;
-			while (mil > 1000) {
+		if (mil >= 1000) {
+			this.hour += mil / 3600000;
+			while (mil >= 3600000) {
+				mil -= 3600000;
+			}
+			this.minute += mil / 60000;
+			while (mil >= 60000) {
+				mil -= 60000;
+			}
+			this.second += mil / 1000;
+			while (mil >= 1000) {
 				mil -= 1000;
 			}
 			this.millisecond = mil;
 		} else {
 			this.millisecond = mil;
 		}
-		updateTimeString();
 	}
 
 	/*
@@ -89,11 +94,6 @@ public class TimeData {
 	public int millisecond() {
 		return this.millisecond;
 	}
-	
-	public void updateTimeString() {
-		this.timeString = Integer.toString(this.hour) + ";" + Integer.toString(this.minute)
-			+ ";" + Integer.toString(this.second) + ";" + Integer.toString(this.millisecond);
-	}
 
 	public String toString() {
 		return timeString;
@@ -118,4 +118,12 @@ public class TimeData {
 
 		parsedTime = null;
 	}
+	
+	public static void main(String[] args) {
+		TimeData td = new TimeData();
+		td.setMil(1000);
+		
+		System.out.println(td.millisecond());
+	}
+
 }
