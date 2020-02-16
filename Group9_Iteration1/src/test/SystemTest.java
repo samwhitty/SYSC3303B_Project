@@ -31,7 +31,7 @@ public class SystemTest {
 	Object[] data;
 	
 	/**
-	 * 
+	 * Set up 
 	 */
 	@Before
 	public void setUp() {
@@ -45,6 +45,11 @@ public class SystemTest {
 		eState = EState.WAITING;
 		sState = SchedulerState.WAITFORREQUEST;
 	}
+	/**
+	 * Test data transfer between classes
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	@Test
 	public void dataTransfer() throws IOException, InterruptedException {
 		floor.readInput();
@@ -57,6 +62,10 @@ public class SystemTest {
 		elevator.sendRequest();
 		assertTrue("checks if elevator send queue isn't empty", !from_elevator.isEmpty());
 	}
+	/**
+	 * Tests StateMachine States
+	 * @throws IOException
+	 */
 	@Test
 	public void stateMachineTest() throws IOException {
 		floor.readInput();
