@@ -118,13 +118,13 @@ public class FloorSubsystem implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Floor Subsystem running.");
-
-		while(true) {
+		boolean hasInput = true;
+		while(hasInput) {
 			if(to_scheduler.isEmpty()) {
 				if(Scheduler.getSchedulerState() == SchedulerState.WAITFORREQUEST) {
 					
 					try {
-						this.readInput();
+						hasInput = this.readInput();
 						this.sendRequest();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
