@@ -118,12 +118,5 @@ public class TimeData {
 
 		parsedTime = null;
 	}
-	
-	public static void main(String[] args) {
-		TimeData td = new TimeData();
-		td.setMil(1000);
-		
-		System.out.println(td.millisecond());
-	}
 
 }
