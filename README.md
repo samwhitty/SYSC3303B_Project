@@ -65,7 +65,7 @@ proccessed by the elevator.
 
 ### Sam
 - Scheduler state machine diagram
-- README.md / README.txt
+- README.md
 - TimeData
 
 ### Said
@@ -75,7 +75,7 @@ proccessed by the elevator.
 
 ## Deliverables:
 - All Relevent Java Files
-- UML Class diagram: Iteration2_ClassDiagram.png
-- UML Sequence diagram: iteration2_sequence.png
-- SchedulerSubsystem State Machine diagram: SchedulerStateMachineDiagram.png
-- ElevatorSubsystem State Machine diagram:  	elevator_state_machine_diagram.state.violet.html.png
+- UML Class diagram in /diagrams/iter2
+- UML Sequence diagram: /diagrams/iter2
+- SchedulerSubsystem State Machine diagram: /diagrams/iter2
+- ElevatorSubsystem State Machine diagram:  	/diagrams/iter2
