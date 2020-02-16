@@ -26,9 +26,27 @@ Relevant Files:
   TimeData:
 
 
-All classes in util folder are for next iteration even though some have been used. 
+All other classes ( found in /src and /src/util folders) are for the next iteration or previous iteration.
+
+Member Tasks:
+  
+	Everett
+		- Scheduler state machine
+
+	Michael
+		- Elevator state machine
+
+	Sam
+		- Scheduler state machine diagram
+		- README
+		- TimeData changes
+
+	Said
+		- elevator state machine diagram
 
 Deliverables:
 - All Relevent Java Files
-- UML Class diagram: Iteration1_ClassDiagram.png
-- UML Sequence diagram: iteration1_sequence.png
+- UML Class diagram: Iteration2_ClassDiagram.png
+- UML Sequence diagram: iteration2_sequence.png
+- SchedulerSubsystem State Machine diagram: SchedulerStateMachineDiagram.png
+- FloorSubsystem State Machine diagram: FloorStateMachineDiagram.png
