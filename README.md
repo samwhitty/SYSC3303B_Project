@@ -12,6 +12,10 @@ Said Omar               (GitHub saidsheikhomar) (Student ID: 101004648)
 Due: 02/15/2020
 GitHub : https://github.com/samwhitty/SYSC3303B_Project
 
+# To Run
+
+Import into Eclipse, and run as a Java Project.
+
 # Relevant Files:
 
 ## /src/iteration1
