@@ -54,7 +54,8 @@ public class Scheduler extends Thread {
 	 */
 	public synchronized void receiveFloorData() {
 		try {
-			floor.sendRequest();
+			data = from_floor.take();
+			from_floor.clear();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,8 +63,7 @@ public class Scheduler extends Thread {
 	}
 	
 	public synchronized void sendDataToElevator() {
-		if(!to_floor.isEmpty()) {
-			to_floor.drainTo(from_elevator);
+
 			Object[] data_to_send = new Object[5];
 			try {
 				data_to_send = from_elevator.take();
@@ -76,21 +76,14 @@ public class Scheduler extends Thread {
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-		}
+			}	
 	}
 
 	/*
 	 * This method sends data to the floor subsystem.
 	 */
 	public synchronized void receiveElevatorData() {
-		try {
-			elevator.sendRequest();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		Object[] return_data = new Object[5];
 		try {
 			return_data = to_elevator.take();
@@ -115,28 +108,6 @@ public class Scheduler extends Thread {
 	}
 
 	/**
-	 * Checks if either of the queues has data to send.
-	 */
-	public synchronized Boolean dataWaitingFloor() {
-		if (to_floor.isEmpty()) {
-			System.out.println("No data to send.");
-			return false;
-		} else {
-			System.out.println("Data ready to send");
-			return true;
-		}
-	}
-	public synchronized Boolean dataWaitingeElevator() {
-		if (to_elevator.isEmpty()) {
-			System.out.println("No data to send.");
-			return false;
-		} else {
-			System.out.println("Data ready to send");
-			return true;
-		}
-	}
-
-	/**
 	 * Runs the scheduler.
 	 */
 	@Override
@@ -145,13 +116,7 @@ public class Scheduler extends Thread {
 		
 		while(true) {
 			if (!from_floor.isEmpty()) {
-				try {
-					data = from_floor.take();
-					from_floor.clear();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				receiveFloorData();
 			}
 			
 			if (state == SchedulerState.DISPATCHELEVATOR) {
