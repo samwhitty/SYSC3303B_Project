@@ -1,7 +1,10 @@
 # SYSC3303B_Project Group 9:
 Sam Whitty              (GitHub samwhitty)      (Student ID: 101002258)
+
 Everett	Soldaat         (GitHub everettsoldaat) (Student ID: 101038071)
+
 Michael Evans           (GitHub MikeEvans6)     (Student ID: 101067157)
+
 Said Omar               (GitHub saidsheikhomar) (Student ID: 101004648)
 
 ## Iteration 2:
