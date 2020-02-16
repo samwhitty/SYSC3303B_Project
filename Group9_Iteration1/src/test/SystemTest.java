@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -27,7 +28,11 @@ public class SystemTest {
 	Scheduler scheduler;
 	EState eState;
 	SchedulerState sState;
+	Object[] data;
 	
+	/**
+	 * 
+	 */
 	@Before
 	public void setUp() {
 		from_floor = new ArrayBlockingQueue<>(10);
@@ -53,8 +58,23 @@ public class SystemTest {
 		assertTrue("checks if elevator send queue isn't empty", !from_elevator.isEmpty());
 	}
 	@Test
-	public void stateMachineTest() {
-		
+	public void stateMachineTest() throws IOException {
+		floor.readInput();
+		data = floor.getData();
+		sState = sState.next(data);
+		assertEquals("Checks if state has changed to DISPATCHELEVATOR", sState, SchedulerState.DISPATCHELEVATOR);
+		eState = eState.next(data);
+		assertEquals("Checks if state has changed to PICKUP", eState, EState.PICKUP);
+		eState = eState.next(data);
+		assertEquals("Checks if state has changed to LOADING", eState, EState.LOADING);
+		eState = eState.next(data);
+		assertEquals("Checks if state has changed to DOWN", eState, EState.DOWN);
+		eState = eState.next(data);
+		assertEquals("Checks if state has changed to UNLOADING", eState, EState.UNLOADING);
+		eState = eState.next(data);
+		assertEquals("Checks if state has changed to STOPPED", eState, EState.STOPPED);
+		data = eState.getData(data);
+		assertEquals("Checks is Elevator is on destination floor", (int) data[4], (int) data[3]);
 	}
 	
 	
