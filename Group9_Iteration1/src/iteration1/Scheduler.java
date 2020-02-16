@@ -135,12 +135,9 @@ public class Scheduler extends Thread {
 				if (!from_elevator.isEmpty()) {
 					this.receiveElevatorData();
 					this.sendDataToFloor();
-				}
-				if (!to_elevator.isEmpty()) {
 					state = SchedulerState.WAITFORREQUEST;
 				}
 			}
-
 		}
 
 	}
