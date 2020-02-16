@@ -1,65 +1,63 @@
-Group 9:
-Sam Whitty              (GitHub samwhitty)      (Student ID: 101002258)\n
-Everett	Soldaat         (GitHub everettsoldaat) (Student ID: 101038071)\n
-Michael Evans           (GitHub MikeEvans6)     (Student ID: 101067157)\n
-Said Omar               (GitHub saidsheikhomar) (Student ID: 101004648)\n
+# SYSC3303B_Project Group 9:
+Sam Whitty              (GitHub samwhitty)      (Student ID: 101002258)
+Everett	Soldaat         (GitHub everettsoldaat) (Student ID: 101038071)
+Michael Evans           (GitHub MikeEvans6)     (Student ID: 101067157)
+Said Omar               (GitHub saidsheikhomar) (Student ID: 101004648)
 
-Iteration 2:
+## Iteration 2:
 
 02/15/2020
 
-Relevant Files:
+## Relevant Files:
 
-  /src/iteration1
+/src/iteration1
 
-	  ElevatorSubsystem: 
+## ElevatorSubsystem: 
 
-	  - Recieves information from the scheduler provided by the FloorSubsystem
-	  and sends it back to the scheduler.
+- Recieves information from the scheduler provided by the FloorSubsystem and sends it back to the scheduler.
 
-	  FloorSubsystem: 
+## FloorSubsystem: 
 
-	  - Reads from an input file and sends instructions to the schedular by using a queue. Changes state based on the
+- Reads from an input file and sends instructions to the schedular by using a queue. Changes state based on the
 
-	  Scheduler:
+## Scheduler:
 
-	  - Takes information from the Floor queue and moves it to the Elevator queue to be 
-	  proccessed by the elevator. 
+- Takes information from the Floor queue and moves it to the Elevator queue to be 
+proccessed by the elevator. 
 
-  /src/iteration2
+## /src/iteration2
 
-	  FloorStateMachine:
+### FloorStateMachine:
 
-	  - Defines the state that a floor is in, hiding which functions are available and what functions are unavailable. FloorStateMachine extends the FloorSubsystem and changes state through functions defined within FloorSubsystem.
+- Defines the state that a floor is in, hiding which functions are available and what functions are unavailable. FloorStateMachine extends the FloorSubsystem and changes state through functions defined within FloorSubsystem.
 
-	  SchedulerStateMachine:
+### SchedulerStateMachine:
 
-	  - Defines the state that the scheduler is in, hiding which functions are available and what functions are unavailable. SchedulerStateMachine extends the SchedulerStateMachine and changes state through functions defined within SchedulerSubsystem.
+- Defines the state that the scheduler is in, hiding which functions are available and what functions are unavailable. SchedulerStateMachine extends the SchedulerStateMachine and changes state through functions defined within SchedulerSubsystem.
 
-  /src/util
+## /src/util
 
-	  TimeData:
+### TimeData:
 
+### All other classes ( found in /src and /src/util folders) are for the next iteration or previous iteration.
 
-All other classes ( found in /src and /src/util folders) are for the next iteration or previous iteration.
+## Tasks:
 
-	Member Tasks:
-  
-	Everett
-		- Scheduler state machine
+### Everett
+- Scheduler state machine
 
-	Michael
-		- Elevator state machine
+### Michael
+- Elevator state machine
 
-	Sam
-		- Scheduler state machine diagram
-		- README
-		- TimeData changes
+### Sam
+- Scheduler state machine diagram
+- README
+- TimeData changes
 
-	Said
-		- Elevator state machine diagram
+### Said
+- Elevator state machine diagram
 
-Deliverables:
+## Deliverables:
 - All Relevent Java Files
 - UML Class diagram: Iteration2_ClassDiagram.png
 - UML Sequence diagram: iteration2_sequence.png
