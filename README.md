@@ -6,22 +6,24 @@ Said Omar		(GitHub saidsheikhomar)	(Student ID: 101004648)
 
 02/15/2020
 
-ElevatorSubsystem: 
-Recieves information from the scheduler provided by the FloorSubsystem
-and sends it back to the scheduler.
+Relevant Files:
 
-FloorSubsystem: 
-Reads from an input file and sends instructions to the schedular by using a queue. 
+  ElevatorSubsystem: 
+  Recieves information from the scheduler provided by the FloorSubsystem
+  and sends it back to the scheduler.
 
-Schedular:
-Takes information from the Floor queue and moves it to the Elevator queue to be 
-proccessed by the elevator. 
+  FloorSubsystem: 
+  Reads from an input file and sends instructions to the schedular by using a queue. 
 
-FloorStateMachine:
+  Scheduler:
+  Takes information from the Floor queue and moves it to the Elevator queue to be 
+  proccessed by the elevator. 
 
-SchedularStateMachine:
+  FloorStateMachine:
 
-TimeData:
+  SchedulerStateMachine:
+
+  TimeData:
 
 
 All classes in util folder are for next iteration even though some have been used. 
