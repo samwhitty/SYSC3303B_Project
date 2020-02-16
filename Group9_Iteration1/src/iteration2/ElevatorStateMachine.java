@@ -132,6 +132,7 @@ public class ElevatorStateMachine {
 				newData = data;
 				TimeData time = (TimeData) newData[0];
 				time.setSec(travelTime);
+				travelTime = 0;
 				newData[0] = (TimeData) time;
 				newData[4] = (int) newData[3];
 				return newData;
