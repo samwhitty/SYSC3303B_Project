@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.regex.MatchResult;
 
+import iteration2.SchedulerStateMachine.SchedulerState;
 import util.TimeData;
 
 /**
@@ -53,25 +54,9 @@ public class FloorSubsystem implements Runnable {
 	}
 
 	/*
-	 * Sends data if possible, stops once it successfully sends data.
-	 */
-	@Override
-	public void run() {
-		System.out.println("Floor Subsystem running.");
-
-		while(true) {
-			if(send_queue.isEmpty() && receive_queue.isEmpty()) {
-				
-			}
-		}
-
-	}
-	/*
 	 * Reads input from file. Should be passed a string with the full filename.
 	 * Works for any plain text file. Must be in format of "HH/MM/SS.S"
 	 */
-
-	
 	public synchronized boolean readInput() throws IOException {
 		s.findInLine("(\\d+\\S\\d+\\S\\d+\\S\\d) (\\d) ([a-zA-Z]+) (\\d)");
 		MatchResult result = s.match();
@@ -109,5 +94,28 @@ public class FloorSubsystem implements Runnable {
 
 	public synchronized void receiveRequest() {
 		send_queue.drainTo(receive_queue);
+	}
+	
+
+	/*
+	 * Sends data if possible, stops once it successfully sends data.
+	 */
+	@Override
+	public void run() {
+		System.out.println("Floor Subsystem running.");
+
+		while(true) {
+			if(send_queue.isEmpty() && receive_queue.isEmpty()) {
+				if(Scheduler.getSchedulerState() == SchedulerState.WAITFORREQUEST) {
+					try {
+						sendRequest();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
 	}
 }
