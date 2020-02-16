@@ -9,13 +9,16 @@ Said Omar		(GitHub saidsheikhomar)	(Student ID: 101004648)
 Relevant Files:
 
   ElevatorSubsystem: 
+  
   -Recieves information from the scheduler provided by the FloorSubsystem
   and sends it back to the scheduler.
 
   FloorSubsystem: 
+  
   -Reads from an input file and sends instructions to the schedular by using a queue. 
 
   Scheduler:
+  
   -Takes information from the Floor queue and moves it to the Elevator queue to be 
   proccessed by the elevator. 
 
