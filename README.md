@@ -10,33 +10,35 @@ Iteration 2:
 
 Relevant Files:
 
-  /src/Iteration1
+  /src/iteration1
 
-  ElevatorSubsystem: 
-  
-  - Recieves information from the scheduler provided by the FloorSubsystem
-  and sends it back to the scheduler.
+	  ElevatorSubsystem: 
 
-  FloorSubsystem: 
-  
-  - Reads from an input file and sends instructions to the schedular by using a queue. Changes state based on the
+	  - Recieves information from the scheduler provided by the FloorSubsystem
+	  and sends it back to the scheduler.
 
-  Scheduler:
-  
-  - Takes information from the Floor queue and moves it to the Elevator queue to be 
-  proccessed by the elevator. 
+	  FloorSubsystem: 
 
-  /src/Iteration2
+	  - Reads from an input file and sends instructions to the schedular by using a queue. Changes state based on the
 
-  FloorStateMachine:
-  
-  - Defines the state that a floor is in, hiding which functions are available and what functions are unavailable. FloorStateMachine extends the FloorSubsystem and changes state through functions defined within FloorSubsystem.
+	  Scheduler:
 
-  SchedulerStateMachine:
-  
-  - Defines the state that the scheduler is in, hiding which functions are available and what functions are unavailable. SchedulerStateMachine extends the SchedulerStateMachine and changes state through functions defined within SchedulerSubsystem.
+	  - Takes information from the Floor queue and moves it to the Elevator queue to be 
+	  proccessed by the elevator. 
 
-  TimeData:
+  /src/iteration2
+
+	  FloorStateMachine:
+
+	  - Defines the state that a floor is in, hiding which functions are available and what functions are unavailable. FloorStateMachine extends the FloorSubsystem and changes state through functions defined within FloorSubsystem.
+
+	  SchedulerStateMachine:
+
+	  - Defines the state that the scheduler is in, hiding which functions are available and what functions are unavailable. SchedulerStateMachine extends the SchedulerStateMachine and changes state through functions defined within SchedulerSubsystem.
+
+  /src/util
+
+	  TimeData:
 
 
 All other classes ( found in /src and /src/util folders) are for the next iteration or previous iteration.
