@@ -64,7 +64,6 @@ public class ElevatorSubsystem implements Runnable {
 				currentFloor = (int) data[4];
 				this.sendRequest();
 			}
-			
 		}
 		
 	}
