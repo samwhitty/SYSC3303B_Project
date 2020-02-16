@@ -17,11 +17,14 @@ public class TimeData {
 
 	public void setHour(int hr) {
 		this.hour = hr;
+		updateTimeString();
 	}
+	
 
 	public void setMin(int min) {
 		this.minute = min % 60;
 		this.hour += (int) Math.floor(min / 60);
+		updateTimeString();
 	}
 
 	// Sets Seconds, but also checks if there is 60 or more seconds
@@ -39,6 +42,7 @@ public class TimeData {
 			this.millisecond += (int) (sec - secon) * 1000;
 			this.second = (int) Math.floor(sec);
 		}
+		updateTimeString();
 	}
 
 	public void setMil(int mil) {
@@ -53,6 +57,7 @@ public class TimeData {
 		} else {
 			this.millisecond = mil;
 		}
+		updateTimeString();
 	}
 
 	/*
@@ -83,6 +88,11 @@ public class TimeData {
 
 	public int millisecond() {
 		return this.millisecond;
+	}
+	
+	public void updateTimeString() {
+		this.timeString = Integer.toString(this.hour) + ";" + Integer.toString(this.minute)
+			+ ";" + Integer.toString(this.second) + ";" + Integer.toString(this.millisecond);
 	}
 
 	public String toString() {
