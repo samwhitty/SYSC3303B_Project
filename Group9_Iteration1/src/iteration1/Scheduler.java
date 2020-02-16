@@ -25,7 +25,7 @@ public class Scheduler extends Thread {
 	private BlockingQueue<Object[]> finQueue = null;
 	private BlockingQueue<Object[]> foutQueue = null;
 	
-	private SchedulerState state;
+	private static SchedulerState state;
 	
 	/*
 	 * Constructor for the scheduler.
@@ -41,6 +41,10 @@ public class Scheduler extends Thread {
 		
 		this.state = SchedulerState.WAITFORREQUEST;
 
+	}
+	
+	public static SchedulerState getSchedulerState() {
+		return state;
 	}
 
 	/*
@@ -106,7 +110,7 @@ public class Scheduler extends Thread {
 	/**
 	 * Sends a filename to the FloorSubsystem for it to read.
 	 */
-	public synchronized void makeFloorRead(String input) {
+	public synchronized void makeFloorRead() {
 		try {
 			floor.readInput();
 		} catch (IOException e) {
@@ -122,8 +126,8 @@ public class Scheduler extends Thread {
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
 		
-		makeFloorRead("input.txt");
-		receiveFloorData();
+		makeFloorRead();
+		receiveFloorData(); //Maybe in floor instead
 		
 		while (state == SchedulerState.DISPATCHELEVATOR) {
 			sendDataToElevator();
