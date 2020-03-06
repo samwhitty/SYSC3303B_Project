@@ -1,22 +1,8 @@
-package iteration2;
+package iteration3;
 
 
-import java.util.concurrent.BlockingQueue;
+public class SchedulerStateMachine {
 
-import iteration1.ElevatorSubsystem;
-import iteration1.FloorSubsystem;
-import iteration1.Scheduler;
-
-public class SchedulerStateMachine extends Scheduler {
-
-	
-	
-	public SchedulerStateMachine(BlockingQueue<Object[]> einQueue, BlockingQueue<Object[]> eoutQueue,
-			BlockingQueue<Object[]> foutQueue, BlockingQueue<Object[]> finQueue, ElevatorSubsystem elev,
-			FloorSubsystem floor) {
-		super(einQueue, eoutQueue, foutQueue, finQueue, elev, floor);
-		
-	}
 
 	public static enum SchedulerState{
 		/**
@@ -24,7 +10,14 @@ public class SchedulerStateMachine extends Scheduler {
 		 */
 		WAITFORREQUEST{
 			@Override
-			public SchedulerState next(Object[] data) {
+			public SchedulerState next(byte[] data) {
+				int index = 0;
+				while(data[index] != 0) {
+					index++;
+				}
+				index += 3;
+				byte[] d = {data[index], data[index+1]};
+				
 				if (data[2] == (String) "Up") {
 					if ((int) data[1] > (int) data[3]) {
 						return INVALID;
@@ -49,7 +42,7 @@ public class SchedulerStateMachine extends Scheduler {
 		 */
 		DISPATCHELEVATOR{
 			@Override
-			public SchedulerState next(Object[] data) {
+			public SchedulerState next(byte[] data) {
 				return DISPATCHELEVATOR;
 			}
 		},
@@ -59,7 +52,7 @@ public class SchedulerStateMachine extends Scheduler {
 		 */
 		WAITFORELEVATOR{
 			@Override
-			public SchedulerState next(Object[] data) {
+			public SchedulerState next(byte[] data) {
 				return WAITFORELEVATOR;
 			}
 		},
@@ -69,12 +62,12 @@ public class SchedulerStateMachine extends Scheduler {
 		 */
 		INVALID{
 			@Override
-			public SchedulerState next(Object[] data) {
+			public SchedulerState next(byte[] data) {
 				return INVALID;
 			}
 		};
 		
-		public SchedulerState next(Object[] data) {
+		public SchedulerState next(byte[] data) {
 			return null;
 		}
 		
