@@ -167,7 +167,16 @@ public class ElevatorStateMachine {
 		PICKDOWN {
 			@Override
 			public EState next(byte[] data) {
-				int ftravel = (int) data[4] - (int) data[1];
+				int indexP = 0;
+				int indexC = data.length -1;
+				while(data[indexP] != 0) {
+					indexP++;
+				}
+				indexP++;
+				while(data[indexC] == 0) {
+					indexC--;
+				}
+				int ftravel = (int) data[indexC] - (int) data[indexP];
 				if (ftravel > 1) {
 					travelTime += oneToTwo;
 					for (int i = 1; i < ftravel; i++) {
@@ -177,9 +186,10 @@ public class ElevatorStateMachine {
 							travelTime += average;
 						}
 					}
-					data[4] = data[1];
+					data[indexC] = data[indexP];
 					return LOADING;
 				} else {
+					data[indexC] = data[indexP];
 					travelTime += oneToTwo;
 					return LOADING;
 				}
@@ -207,8 +217,17 @@ public class ElevatorStateMachine {
 				//time.setSec(travelTime);
 				//String newtime = time.toString();
 				//newData[0] = (TimeData) time;
-				//newData[4] = (int) newData[3];
-				//return newData;
+				int indexP = 0;
+				int indexC = data.length -1;
+				while(data[indexP] != 0) {
+					indexP++;
+				}
+				indexP++;
+				while(data[indexC] == 0) {
+					indexC--;
+				}
+				data[indexC] = data[indexP];
+				return data;
 			}
 		},;
 
