@@ -16,9 +16,9 @@ public class SchedulerStateMachine {
 					index++;
 				}
 				index += 3;
-				byte[] d = {data[index], data[index+1]};
-				
-				if (data[2] == (String) "Up") {
+				byte[] d = new byte[4];
+				String direction = new String(d, 0, d.length);
+				if (direction ==  "Up") {
 					if ((int) data[1] > (int) data[3]) {
 						return INVALID;
 					} else if ((int) data[1] == (int) data[3]) {
@@ -26,7 +26,7 @@ public class SchedulerStateMachine {
 					}
 				}
 				
-				if (data[2] == (String) "Down") {
+				if (direction == (String) "Down") {
 					if ((int) data[1] < (int) data[3]) {
 						return INVALID;
 					} else if ((int) data[1] == (int) data[3]) {
