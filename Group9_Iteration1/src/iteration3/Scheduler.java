@@ -46,7 +46,20 @@ public class Scheduler extends Thread {
 		}
 		this.state = SchedulerState.WAITFORREQUEST;
 	}
+	
+	
+	 //Close both send and receiver sockets
+	
+	protected void socketTearDown() {
+		if (sendSocket != null) {
+			sendSocket.close();
+		}
 
+		receiveSocket.close();
+		receiveSocket = null;
+
+	}
+	 
 	/**
 	 * Getter for Scheduler State.
 	 */
