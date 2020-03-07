@@ -12,7 +12,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 
 
-import iteration2.ElevatorStateMachine.EState;
+import iteration3.ElevatorStateMachine.EState;
 
 /**
  * @author Samuel Whitty & Said Omar & Everett Soldaat & Michael Evans
@@ -118,11 +118,12 @@ public class ElevatorSubsystem implements Runnable {
 			index += 2;
 			data[index] = currentFloor;
 			
-			//while(state != EState.STOPPED) {
-			//	state = state.next(data);
-			//}
-			//data = state.getData(data);
-			//currentFloor = (int) data[4];
+			while(state != EState.STOPPED) {
+				state = state.next(data);
+			}
+			data = state.getData(data);
+			
+			currentFloor = data[index];
 			try {
 				sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 41);
 			} catch (UnknownHostException e) {
@@ -130,7 +131,7 @@ public class ElevatorSubsystem implements Runnable {
 				e.printStackTrace();
 			}
 			this.sendRequest();
-			//state = EState.WAITING;
+			state = EState.WAITING;
 			r = new byte[100];
 			this.receiveRequest(r);
 		}
