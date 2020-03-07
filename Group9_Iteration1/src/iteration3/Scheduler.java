@@ -75,25 +75,9 @@ public class Scheduler extends Thread {
 	 * Sends a packet to ElevatorManager to create Elevators
 	 * @param numElevators
 	 */
-	public void setup(byte numElevators) {
-		byte[] data = ByteBuffer.allocate(4).putInt(numElevators).array();
-
-		try {
-			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 99);
-			
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			sendSocket.send(sendPacket);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
-	public void selectElevator() {
+	public DatagramSocket selectElevator() {
+		DatagramSocket socket;
 		
 		try {
 			e1_receiveSocket.receive(e1_receivePacket);
@@ -108,8 +92,10 @@ public class Scheduler extends Thread {
 		
 		if (Math.abs(requestedFloor - e1Floor) < Math.abs(requestedFloor - e2Floor)) {
 			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), e1_receivePacket.getPort());
+			socket = e1_receiveSocket;
 		} else {
 			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), e1_receivePacket.getPort());
+			socket = e2_receiveSocket;
 		}
 		
 		try {
@@ -118,27 +104,10 @@ public class Scheduler extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return socket;
 		
  	}
 	
-	public void getElevatorPositions() {
-		//adds 99 to data
-		byte[] data = ByteBuffer.allocate(4).putInt(99).array();
-
-		try {
-			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 99);
-			
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			sendSocket.send(sendPacket);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * This method receives data from the floor subsystem. Also empties the out
@@ -195,23 +164,26 @@ public class Scheduler extends Thread {
 	 * This method receives data from the elevator subsystem, and prints out the
 	 * data received.
 	 */
-	public synchronized void receiveElevatorData() {
+	public synchronized byte[] receiveElevatorData(DatagramSocket socket) {
+		byte[] data = new byte[100];
+		DatagramPacket packet = new DatagramPacket(data, data.length);
 		try {
-			e1_receiveSocket.receive(receivePacket);
+			socket.receive(packet);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 		System.out.println("Client: Reply received:");
-		System.out.println("From host: " + receivePacket.getAddress());
-		System.out.println("Host port: " + receivePacket.getPort());
-		int len = receivePacket.getLength();
+		System.out.println("From host: " + packet.getAddress());
+		System.out.println("Host port: " + packet.getPort());
+		int len = packet.getLength();
 		System.out.println("Length: " + len);
-		String received = new String(receivePacket.getData(), 0, len);
+		String received = new String(packet.getData(), 0, len);
 		System.out.println("Containing: " + received);
-		System.out.println("Containing bytes: " + Arrays.toString(receivePacket.getData()));
+		System.out.println("Containing bytes: " + Arrays.toString(packet.getData()));
 		System.out.println();
 
+		return packet.getData();
 	}
 
 	/**
@@ -277,26 +249,32 @@ public class Scheduler extends Thread {
 	@Override
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
-
+		DatagramSocket return_socket;
+		try {
+			return_socket = new DatagramSocket();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		while (true) {
-			this.receiveAndSend();
-			if (!from_floor.isEmpty()) {
+			//this.receiveAndSend();
+			//if (!from_floor.isEmpty()) {
 				byte[] data = receiveFloorData();
 				state = state.next(data);
+			//}
+
+			if (state == SchedulerState.DISPATCHELEVATOR) {
+				return_socket = selectElevator();
+				state = SchedulerState.WAITFORELEVATOR;
 			}
 
-			//if (state == SchedulerState.DISPATCHELEVATOR) {
-			//	sendDataToElevator();
-			//	state = SchedulerState.WAITFORELEVATOR;
-			//}
-
-			//while (state == SchedulerState.WAITFORELEVATOR) {
-			//	if (!from_elevator.isEmpty()) {
-			//		this.receiveElevatorData();
-			//		this.sendDataToFloor();
-			//		state = SchedulerState.WAITFORREQUEST;
-				//}
-			//}
+			while (state == SchedulerState.WAITFORELEVATOR) {
+			
+				data = receiveElevatorData(return_socket);
+				this.sendDataToFloor(data);
+				state = SchedulerState.WAITFORREQUEST;	
+			}
 		}
 	}
 
@@ -306,14 +284,6 @@ public class Scheduler extends Thread {
 	public static void main(String[] args) {
 
 		Scheduler scheduler = new Scheduler();
-		scheduler.setup((byte) 0x02);
-		try {
-			sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		scheduler.getElevatorPositions();
 		
 		new Thread(scheduler).start();
 	}
