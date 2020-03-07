@@ -23,7 +23,7 @@ import iteration2.SchedulerStateMachine.SchedulerState;
 public class Scheduler extends Thread {
 
 	DatagramPacket sendPacket, receivePacket;
-	DatagramSocket sendSocket, e_receiveSocket, f_receiveSocket;
+	DatagramSocket sendSocket, e_receiveSocket, f_receiveSocket, m_receiveSocket;
 	private static SchedulerState state;
 	
 	/**
@@ -40,6 +40,7 @@ public class Scheduler extends Thread {
 			sendSocket = new DatagramSocket();
 			f_receiveSocket = new DatagramSocket(23);
 			e_receiveSocket = new DatagramSocket(41);
+			m_receiveSocket = new DatagramSocket(56);
 		} catch (SocketException se) {
 			se.printStackTrace();
 			System.exit(1);
