@@ -225,14 +225,14 @@ public class Scheduler extends Thread {
 		this.sendDataToFloor(reply);
 		
 		f_receivePacket = new DatagramPacket(request, request.length);
-		this.receiveElevatorData();
+		//this.receiveElevatorData();
 		
 		this.sendDataToElevator(data);
 		
 		data = new byte[100];
 		
 		f_receivePacket = new DatagramPacket(data, data.length);
-		this.receiveElevatorData();
+		//this.receiveElevatorData();
 		
 		reply = ("Data Received").getBytes();
 		this.sendDataToElevator(reply);
@@ -249,7 +249,7 @@ public class Scheduler extends Thread {
 	@Override
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
-		DatagramSocket return_socket;
+		DatagramSocket return_socket = null;
 		try {
 			return_socket = new DatagramSocket();
 		} catch (SocketException e) {
