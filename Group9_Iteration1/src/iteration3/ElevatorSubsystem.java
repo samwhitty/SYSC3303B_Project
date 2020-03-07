@@ -22,6 +22,7 @@ public class ElevatorSubsystem implements Runnable {
 
 	private EState state;
 	private byte currentFloor;
+	private int schedulerPort;
 	
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket; 
@@ -31,12 +32,13 @@ public class ElevatorSubsystem implements Runnable {
 	 * @param out
 	 * @param in
 	 */
-	public ElevatorSubsystem() {
+	public ElevatorSubsystem(int port, int receivePort) {
 
 		this.state = EState.WAITING;
 		this.currentFloor = 1;
+		this.schedulerPort = port;
 		try {
-			receiveSocket = new DatagramSocket(69);
+			receiveSocket = new DatagramSocket(receivePort);
 		} catch (SocketException se) {
 			se.printStackTrace();
 			System.exit(1);
@@ -103,7 +105,7 @@ public class ElevatorSubsystem implements Runnable {
 			byte r[] = {currentFloor};
 			
 			try {
-				sendPacket = new DatagramPacket(r, r.length, InetAddress.getLocalHost(), 41);
+				sendPacket = new DatagramPacket(r, r.length, InetAddress.getLocalHost(), schedulerPort);
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -125,7 +127,7 @@ public class ElevatorSubsystem implements Runnable {
 			
 			currentFloor = data[index];
 			try {
-				sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 41);
+				sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), schedulerPort);
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -139,9 +141,11 @@ public class ElevatorSubsystem implements Runnable {
 	
 	public static void main(String args[]) {
 		
-		ElevatorSubsystem e = new ElevatorSubsystem();
+		ElevatorSubsystem e = new ElevatorSubsystem(41, 69);
+		ElevatorSubsystem e2 = new ElevatorSubsystem(42, 70);
 		Thread el = new Thread(e);
+		Thread e1 = new Thread(e2);
 		el.start();
-		
+		e1.start();
 	}
 }
