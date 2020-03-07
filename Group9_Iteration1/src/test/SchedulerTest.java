@@ -1,5 +1,9 @@
+package test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.*;
+
+import iteration3.Scheduler;
+
 import java.net.*;
 
 class SchedulerTest {

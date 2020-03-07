@@ -1,6 +1,10 @@
+package test;
+
 import java.io.*;
 import.java.net.*;
 import org.junit.jupiter.api.*;
+
+import iteration3.ElevatorSubsystem;
 
 public class ElevatorSubsystemTest {
 	 private EchoHost host;
