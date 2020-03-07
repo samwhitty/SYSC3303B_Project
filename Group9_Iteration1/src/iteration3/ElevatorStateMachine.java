@@ -18,9 +18,19 @@ public class ElevatorStateMachine {
 		WAITING {
 			@Override
 			public EState next(byte[] data) {
-				if ((int) data[1] < (int) data[4]) {
+				int indexP = 0;
+				int indexC = data.length -1;
+				while(data[indexP] != 0) {
+					indexP++;
+				}
+				indexP++;
+				while(data[indexC] == 0) {
+					indexC--;
+				}
+				
+				if ((int) data[indexP] < (int) data[indexC]) {
 					return PICKDOWN;
-				} else if ((int) data[1] > (int) data[4]) {
+				} else if ((int) data[indexP] > (int) data[indexC]) {
 					return PICKUP;
 				} else {
 					return LOADING;
@@ -34,7 +44,20 @@ public class ElevatorStateMachine {
 			@Override
 			public EState next(byte[] data) {
 				travelTime += loading;
-				if (data[2] == (String) "Up") {
+				int index = 0;
+				byte[] s = new byte[4];
+				while(data[index] != 0) {
+					index++;
+				}
+				index += 3;
+				int bindex = 0;
+				while(data[index] != 0) {
+					s[bindex] = data[index];
+					index++;
+					bindex++;
+				}
+				String direction = new String(s, 0, s.length);
+				if ("Up".equals(direction)) {
 					return UP;
 				} else {
 					return DOWN;
@@ -47,7 +70,14 @@ public class ElevatorStateMachine {
 		UP {
 			@Override
 			public EState next(byte[] data) {
-				int ftravel = (int) data[3] - (int) data[1];
+				int indexP = 0;
+				int indexD = 0;
+				while(data[indexP] != 0) {
+					indexP++;
+				}
+				indexP++;
+				indexD = indexP + 5;
+				int ftravel = (int) data[indexD] -  (int) data[indexP];
 				if (ftravel > 1) {
 					travelTime += oneToTwo;
 					for (int i = 1; i < ftravel; i++) {
@@ -70,7 +100,14 @@ public class ElevatorStateMachine {
 		DOWN {
 			@Override
 			public EState next(byte[] data) {
-				int ftravel = (int) data[1] - (int) data[3];
+				int indexP = 0;
+				int indexD = 0;
+				while(data[indexP] != 0) {
+					indexP++;
+				}
+				indexP++;
+				indexD = indexP + 5;
+				int ftravel = (int) data[indexP] - (int) data[indexD];
 				if (ftravel > 1) {
 					travelTime += oneToTwo;
 					for (int i = 1; i < ftravel; i++) {
@@ -95,8 +132,16 @@ public class ElevatorStateMachine {
 		PICKUP {
 			@Override
 			public EState next(byte[] data) {
-
-				int ftravel = (int) data[1] - (int) data[4];
+				int indexP = 0;
+				int indexC = data.length -1;
+				while(data[indexP] != 0) {
+					indexP++;
+				}
+				indexP++;
+				while(data[indexC] == 0) {
+					indexC--;
+				}
+				int ftravel = (int) data[indexP] - (int) data[indexC];
 				if (ftravel > 1) {
 					travelTime += oneToTwo;
 					for (int i = 1; i < ftravel; i++) {
@@ -106,10 +151,11 @@ public class ElevatorStateMachine {
 							travelTime += average;
 						}
 					}
-					data[4] = data[1];
+					data[indexC] = data[indexP];
 					return LOADING;
 				} else {
 					travelTime += oneToTwo;
+					data[indexC] = data[indexP];
 					return LOADING;
 				}
 			}

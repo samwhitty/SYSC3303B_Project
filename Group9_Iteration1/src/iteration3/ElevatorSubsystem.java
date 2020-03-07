@@ -21,7 +21,7 @@ import iteration2.ElevatorStateMachine.EState;
 public class ElevatorSubsystem implements Runnable {
 
 	private EState state;
-	private int currentFloor;
+	private byte currentFloor;
 	
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket; 
@@ -100,9 +100,8 @@ public class ElevatorSubsystem implements Runnable {
 		System.out.println("Elevator Subsystem running.");
 		while(true) {
 			byte data[] = new byte[100];
-			byte r[] = new byte[100];
+			byte r[] = {currentFloor};
 			
-			r = ("Requesting data").getBytes();
 			try {
 				sendPacket = new DatagramPacket(r, r.length, InetAddress.getLocalHost(), 41);
 			} catch (UnknownHostException e) {
@@ -112,6 +111,12 @@ public class ElevatorSubsystem implements Runnable {
 			this.sendRequest();
 			
 			this.receiveRequest(data);
+			int index = data.length -1;
+			while(data[index] ==0) {
+				index--;
+			}
+			index += 2;
+			data[index] = currentFloor;
 			
 			//while(state != EState.STOPPED) {
 			//	state = state.next(data);
@@ -130,7 +135,7 @@ public class ElevatorSubsystem implements Runnable {
 			this.receiveRequest(r);
 		}
 	}
-	/*
+	
 	public static void main(String args[]) {
 		
 		ElevatorSubsystem e = new ElevatorSubsystem();
@@ -138,5 +143,4 @@ public class ElevatorSubsystem implements Runnable {
 		el.start();
 		
 	}
-	*/
 }
