@@ -48,7 +48,7 @@ class SchedulerTest {
 	
 	// Test to make sure the open elevator doors send/recieve works.
 	
-	@SuppressWarnings("static-access")
+
 	@Test
 	void testOpenElevatorDoors() throws UnknownHostException, InterruptedException {
 		elevatorHost.setExpectedNumMessages(1);
@@ -61,5 +61,89 @@ class SchedulerTest {
 		//open and close doors function?
 	}
 	
+	//Test to make sure the send config packet to elevator works
 	
+	@Test
+	void testSendConfigPacketToElevator() throws UnknownHostException, InterruptedException {
+	    elevatorHost.setExpectedNumMessages(1);
+		Thread thread = new Thread(elevatorHost);
+		thread.start();
+		//TODO
+	}
+	
+	//Test to make sure the stop elevator works.
+	@Test
+	void testStopElevator() throws UnknownHostException, InterruptedException {
+	    elevatorHost.setExpectedNumMessages(1);
+	    floorHost.setExpectedNumMessages(1);
 		
+		Thread thread = new Thread(elevatorHost);		
+		Thread thread2 = new Thread(floorHost);
+		thread.start();
+		thread2.start();
+		
+		//TODO
+	}
+	
+	@Test
+	void testSendElevatorUp() throws UnknownHostException, InterruptedException {
+	   
+    	elevatorHost.setExpectedNumMessages(1);
+	    floorHost.setExpectedNumMessages(1);
+	    
+		Thread thread = new Thread(elevatorHost);		
+		Thread thread2 = new Thread(floorHost);
+		thread.start();
+		thread2.start();
+		
+		//TODO
+		
+		
+	
+	
+	@Test
+	void testSendElevatorDown() throws UnknownHostException, InterruptedException {
+	    elevatorHost.setExpectedNumMessages(1);
+	    floorHost.setExpectedNumMessages(1);
+	    
+		Thread thread = new Thread(elevatorHost);		
+		Thread thread2 = new Thread(floorHost);
+		thread.start();
+		thread2.start();
+	
+	//TODO
+	
+
+	
+	}@Test
+	void testCloseElevatorDoors() throws UnknownHostException, InterruptedException {
+	    elevatorHost.setExpectedNumMessages(1);
+	    
+		Thread thread = new Thread(elevatorHost);
+		thread.start();
+		
+		//TODO
+		
+	}
+	
+	//Test to make sure add requests are as expected.
+	 @Test
+    void testAddRequestToScheduler() {
+		
+		//No God damn idea
+	}
+	
+	//test to make sure elevator arrives properly
+	 @Test
+    void testElevatorArriveAtFloor() {
+		
+		//Sorry amigo
+		
+	}
+	
+	
+	
+	
+	
+	
+	
