@@ -50,13 +50,15 @@ public class Scheduler extends Thread {
 	
 	 //Close both send and receiver sockets
 	
-	protected void socketTearDown() {
+	protected void tearDown() {
 		if (sendSocket != null) {
 			sendSocket.close();
 		}
 
-		receiveSocket.close();
-		receiveSocket = null;
+		e_receiveSocket.close();
+		f_receiveSocket.close();
+		e_receiveSocket = null;
+		f_receiveSocket = null;
 
 	}
 	 
