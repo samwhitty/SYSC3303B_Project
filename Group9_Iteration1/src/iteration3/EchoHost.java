@@ -56,11 +56,12 @@ public class EchoHost implements Runnable {
 	public void sendPacket(byte[] msg, InetAddress address, int portNum) {
 		DatagramPacket sendPacket = new DatagramPacket(msg, msg.length, address, portNum);
 
-		System.out.println("Server: Sending packet:");
-		System.out.println("To host: " + sendPacket.getAddress());
-		System.out.println("Destination host port: " + sendPacket.getPort());
+		System.out.println("Test: Sending packet:");
+		System.out.println("Test: To address: " + sendPacket.getAddress());
+		System.out.println("Test: Destination port: " + sendPacket.getPort());
 		int len = sendPacket.getLength();
 		System.out.println("Length: " + len);
+		System.out.print("Test: Containing (as bytes): ");
 		System.out.println(Arrays.toString(sendPacket.getData()));
 		
 		try {
@@ -87,9 +88,9 @@ public class EchoHost implements Runnable {
 			System.exit(1);
 		}
 		
-		System.out.println("Server: Packet received:");
-		System.out.println("From host: " + receivePacket.getAddress());
-		System.out.println("Host port: " + receivePacket.getPort());
+		System.out.println("Test: Packet received:");
+		System.out.println("Test: From address: " + receivePacket.getAddress());
+		System.out.println("Test: From port: " + receivePacket.getPort());
 		int len = receivePacket.getLength();
 		System.out.println("Length: " + len);
 		String received = new String(data, 0, len);
