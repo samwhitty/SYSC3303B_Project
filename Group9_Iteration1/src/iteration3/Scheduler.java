@@ -4,12 +4,15 @@
 package iteration3;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+
+
 
 import iteration2.SchedulerStateMachine.SchedulerState;
 
@@ -49,6 +52,28 @@ public class Scheduler extends Thread {
 	 */
 	public static SchedulerState getSchedulerState() {
 		return state;
+	}
+	
+	/**
+	 * Sends a packet to ElevatorManager to create Elevators
+	 * @param numElevators
+	 */
+	public void setup(byte numElevators) {
+		byte[] data = ByteBuffer.allocate(4).putInt(numElevators).array();
+
+		try {
+			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 99);
+			
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			sendSocket.send(sendPacket);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -216,6 +241,7 @@ public class Scheduler extends Thread {
 	public static void main(String[] args) {
 
 		Scheduler scheduler = new Scheduler();
+		scheduler.setup((byte) 0x02);
 		new Thread(scheduler).start();
 	}
 
