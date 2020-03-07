@@ -42,6 +42,10 @@ public class ElevatorSubsystem implements Runnable {
 			System.exit(1);
 		}
 	}
+	
+	public int getCurrentFloor() {
+		return currentFloor;
+	}
 
 	/**
 	 * Sends request.
@@ -126,9 +130,13 @@ public class ElevatorSubsystem implements Runnable {
 			this.receiveRequest(r);
 		}
 	}
+	/*
 	public static void main(String args[]) {
+		
 		ElevatorSubsystem e = new ElevatorSubsystem();
 		Thread el = new Thread(e);
 		el.start();
+		
 	}
+	*/
 }

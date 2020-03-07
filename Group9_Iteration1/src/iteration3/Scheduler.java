@@ -75,6 +75,25 @@ public class Scheduler extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	public void getElevatorPositions() {
+		//adds 99 to data
+		byte[] data = ByteBuffer.allocate(4).putInt(99).array();
+
+		try {
+			sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), 99);
+			
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			sendSocket.send(sendPacket);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * This method receives data from the floor subsystem. Also empties the out
@@ -242,6 +261,14 @@ public class Scheduler extends Thread {
 
 		Scheduler scheduler = new Scheduler();
 		scheduler.setup((byte) 0x02);
+		try {
+			sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		scheduler.getElevatorPositions();
+		
 		new Thread(scheduler).start();
 	}
 
