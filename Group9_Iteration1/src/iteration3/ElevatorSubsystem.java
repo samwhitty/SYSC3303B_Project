@@ -155,7 +155,13 @@ public class ElevatorSubsystem implements Runnable {
 			}
 		}
 	}
-	
+	public void tearDown() {
+		if (sendSocket != null) {
+			sendSocket.close();
+		}
+		receiveSocket.close();
+
+	}
 	public static void main(String args[]) {
 		
 		ElevatorSubsystem e = new ElevatorSubsystem(41, 69);

@@ -29,14 +29,16 @@ public class SystemTest {
 	
 	/**
 	 * Set up 
+	 * @throws IOException 
 	 */
 	@Before
-	public void setUp() {
+	public void setUp() throws IOException {
 		floor = new FloorSubsystem();
 		elevator = new ElevatorSubsystem(41, 69);
 		scheduler = new Scheduler();
 		eState = EState.WAITING;
 		sState = SchedulerState.WAITFORREQUEST;
+		
 	}
 	/**
 	 * Test data transfer between classes
@@ -46,14 +48,14 @@ public class SystemTest {
 	@Test
 	public void dataTransfer() throws IOException, InterruptedException {
 		floor.readInput();
-		floor.sendRequest();
-		assertTrue("checks if floor in queue isn't empty", !from_floor.isEmpty());
+		floor.sendRequest(floor.getData());
 		scheduler.receiveFloorData();
-		scheduler.sendDataToElevator(data);
-		assertTrue("checks if elevator receive queue isn't empty", !to_elevator.isEmpty());
-		elevator.receiveRequest();
-		elevator.sendRequest();
-		assertTrue("checks if elevator send queue isn't empty", !from_elevator.isEmpty());
+		scheduler.sendDataToElevator(scheduler.getData());
+		byte[] d = new byte[100];
+		elevator.receiveRequest(d);
+		floor.tearDown();
+		elevator.tearDown();
+		scheduler.tearDown();
 	}
 	/**
 	 * Tests StateMachine States
@@ -81,6 +83,9 @@ public class SystemTest {
 			index--;
 		}
 		assertEquals("Checks is Elevator is on destination floor", data[index], data[index-2]);
+		floor.tearDown();
+		elevator.tearDown();
+		scheduler.tearDown();
 	}
 	
 	

@@ -79,7 +79,7 @@ public class FloorSubsystem implements Runnable {
 
 		byte[] dFloorB = { 0, Byte.parseByte(result.group(4)), 0};
 
-		data = new byte[time.length+ floorNumB.length + dByte.length + dFloorB.length];
+		data = new byte[100];
 
 		System.arraycopy(time, 0, data, 0, time.length);
 		System.arraycopy(floorNumB, 0, data, time.length, floorNumB.length);
@@ -106,8 +106,13 @@ public class FloorSubsystem implements Runnable {
 	/**
 	 * Sends data from receive queue to out queue. Also empties the in queue.
 	 */
-	public synchronized void sendRequest() {
-
+	public synchronized void sendRequest(byte[] out) {
+		try {
+			sendPacket = new DatagramPacket(out, out.length, InetAddress.getLocalHost(), 23);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 		System.out.println("Client: Sending Packet:");
 		System.out.println("To host: " + sendPacket.getAddress());
 		System.out.println("Destination host port: " + sendPacket.getPort());
@@ -149,14 +154,8 @@ public class FloorSubsystem implements Runnable {
 	}
 	
 	public void rpc_send(byte[] out, byte[] in) {
-		try {
-			sendPacket = new DatagramPacket(out, out.length, InetAddress.getLocalHost(), 23);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		this.sendRequest();
 		
+		this.sendRequest(out);
 		System.out.println("Client: Request sent.");
 		System.out.println("Waiting for reply");
 		System.out.println();
@@ -184,6 +183,11 @@ public class FloorSubsystem implements Runnable {
 			this.rpc_send(data, reply);
 
 		}
+
+	}
+	
+	public void tearDown() {
+		sendReceiveSocket.close();
 
 	}
 	public static void main(String args[]) {

@@ -41,7 +41,6 @@ public class Scheduler extends Thread {
 			f_receiveSocket = new DatagramSocket(23);
 			e1_receiveSocket = new DatagramSocket(41);
 			e2_receiveSocket = new DatagramSocket(42);
-			m_receiveSocket = new DatagramSocket(56);
 		} catch (SocketException se) {
 			se.printStackTrace();
 			System.exit(1);
@@ -51,15 +50,13 @@ public class Scheduler extends Thread {
 	}
 	
 	 //Close both send and receiver sockets
-	protected void tearDown() {
+	public void tearDown() {
 		if (sendSocket != null) {
 			sendSocket.close();
 		}
-
 		e1_receiveSocket.close();
+		e2_receiveSocket.close();
 		f_receiveSocket.close();
-		e1_receiveSocket = null;
-		f_receiveSocket = null;
 	}
 	
 	public byte[] getData() {
