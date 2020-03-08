@@ -95,11 +95,11 @@ public class Scheduler extends Thread {
 		byte e2Floor = e2_receivePacket.getData()[0];
 		
 		if (Math.abs(requestedFloor - e1Floor) < Math.abs(requestedFloor - e2Floor)) {
-			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), e1_receivePacket.getPort());
+			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), 69);
 			port = e1_receivePacket.getPort();
 			System.out.println("Sending Request to Elevator 1");
 		} else {
-			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), e1_receivePacket.getPort());
+			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(),70);
 			port = e2_receivePacket.getPort();
 			System.out.println("Sending Request to Elevator 2");
 		}
