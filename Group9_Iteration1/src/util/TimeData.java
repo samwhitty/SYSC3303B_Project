@@ -71,9 +71,9 @@ public class TimeData {
 	public String[] parseTime(String time) {
 		String[] parsedTime = new String[5];
 
-		parsedTime[0] = time.substring(0, 1);
-		parsedTime[1] = time.substring(3, 4);
-		parsedTime[2] = time.substring(6, 7);
+		parsedTime[0] = time.substring(0, 2);
+		parsedTime[1] = time.substring(3, 5);
+		parsedTime[2] = time.substring(6, 8);
 		parsedTime[3] = time.substring(9);
 
 		return parsedTime;
@@ -118,5 +118,38 @@ public class TimeData {
 
 		parsedTime = null;
 	}
-
+	
+	public byte[] toBytes() {
+		int hr = this.hour;
+		int min = this.minute;
+		int sec = this.second;
+		int mil = this.millisecond;
+		
+		byte h = (byte) hr;
+		byte m = (byte) min;
+		byte s = (byte) sec;
+		byte ml = (byte) mil;
+		
+		byte[] ret = {h,m,s,ml};
+		
+		return ret;
+	}
+	
+	public String fromBytes(byte[] b) {
+		String s = "";
+		int i = 0;
+		int k;
+		while (i < b.length) {
+			k = (int) b[i];
+			s += Integer.toString(k);
+			if (i < 2) {
+				s+=";";
+			} else if (i == 2) {
+				s+= ".";
+			}
+			i++;
+		}
+		return (s);
+	}
+	
 }
