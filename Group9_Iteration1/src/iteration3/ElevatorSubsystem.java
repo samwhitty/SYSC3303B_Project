@@ -29,9 +29,9 @@ public class ElevatorSubsystem implements Runnable {
 	DatagramSocket sendSocket, receiveSocket; 
 
 	/**
-	 * ElevatorSubsystem Constructor
-	 * @param out
-	 * @param in
+	 * Elevator Constructor
+	 * @param port
+	 * @param receivePort
 	 */
 	public ElevatorSubsystem(int port, int receivePort) {
 
@@ -45,10 +45,17 @@ public class ElevatorSubsystem implements Runnable {
 			System.exit(1);
 		}
 	}
-	
+	/**
+	 * Gets current floor value
+	 * @return
+	 */
 	public int getCurrentFloor() {
 		return currentFloor;
 	}
+	/**
+	 * gets data for testing
+	 * @return
+	 */
 	public byte[] getData() {
 		return this.testData;
 	}
@@ -58,8 +65,8 @@ public class ElevatorSubsystem implements Runnable {
 	 * Also empties the in queue.
 	 */
 	public synchronized void sendRequest() {
-		System.out.println("Server: Sending packet:");
-		System.out.println("To host: " + sendPacket.getAddress());
+		System.out.println("Elevator: Sending Request to Scheduler");
+		System.out.println("To Scheduler: " + sendPacket.getAddress());
 		System.out.println("Destination host port: " + sendPacket.getPort());
 		int len = sendPacket.getLength();
 		System.out.println("Length: " + len);
@@ -87,7 +94,7 @@ public class ElevatorSubsystem implements Runnable {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Server: Packet received:");
+		System.out.println("Elevator: Request received from Scheduler:");
 		System.out.println("From host: " + receivePacket.getAddress());
 		System.out.println("Host port: " + receivePacket.getPort());
 		int len = receivePacket.getLength();
@@ -126,7 +133,6 @@ public class ElevatorSubsystem implements Runnable {
 			String reply = new String(wait, 0, wait.length);
 
 			if(reply.equals("Wait")) {
-				System.out.println(reply);
 			}
 			else {
 				index = data.length -1;
@@ -155,6 +161,9 @@ public class ElevatorSubsystem implements Runnable {
 			}
 		}
 	}
+	/**
+	 * Closes all ports
+	 */
 	public void tearDown() {
 		if (sendSocket != null) {
 			sendSocket.close();

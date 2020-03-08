@@ -48,7 +48,6 @@ public class FloorSubsystem implements Runnable {
 	 * @param send_q
 	 * @param receive_q
 	 */
-
 	public FloorSubsystem() {
 		try {
 			sendReceiveSocket = new DatagramSocket(15);
@@ -152,11 +151,16 @@ public class FloorSubsystem implements Runnable {
 		System.out.println("Containing bytes: " + Arrays.toString(receivePacket.getData()));
 		System.out.println();
 	}
-	
+	/**
+	 * sends an receives requests from 
+	 * scheduler
+	 * @param out
+	 * @param in
+	 */
 	public void rpc_send(byte[] out, byte[] in) {
 		
 		this.sendRequest(out);
-		System.out.println("Client: Request sent.");
+		System.out.println("Floor: Request sent.");
 		System.out.println("Waiting for reply");
 		System.out.println();
 		receivePacket = new DatagramPacket(in, in.length);
@@ -185,7 +189,9 @@ public class FloorSubsystem implements Runnable {
 		}
 
 	}
-	
+	/**
+	 * closes all ports
+	 */
 	public void tearDown() {
 		sendReceiveSocket.close();
 

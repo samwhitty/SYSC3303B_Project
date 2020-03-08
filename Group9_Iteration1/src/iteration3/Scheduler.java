@@ -10,8 +10,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
-import java.lang.*;
-
 
 import iteration3.SchedulerStateMachine.SchedulerState;
 
@@ -26,14 +24,10 @@ public class Scheduler extends Thread {
 	private static SchedulerState state;
 	private boolean elevator1;
 	private byte[] testData = new byte[100];
+	
+	
 	/**
 	 * Constructor for the scheduler.
-	 * @param einQueue
-	 * @param eoutQueue
-	 * @param finQueue
-	 * @param foutQueue
-	 * @param elev
-	 * @param floor
 	 */
 	public Scheduler() {
 		try {
@@ -49,7 +43,9 @@ public class Scheduler extends Thread {
 		elevator1 = true;
 	}
 	
-	 //Close both send and receiver sockets
+	/**
+	 * Close both send and receiver sockets
+	 */
 	public void tearDown() {
 		if (sendSocket != null) {
 			sendSocket.close();
@@ -58,7 +54,10 @@ public class Scheduler extends Thread {
 		e2_receiveSocket.close();
 		f_receiveSocket.close();
 	}
-	
+	/**
+	 * Gets data for testing
+	 * @return
+	 */
 	public byte[] getData() {
 		return this.testData;
 	}
@@ -253,7 +252,6 @@ public class Scheduler extends Thread {
 	@Override
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
-		int return_port = 0;
 		DatagramSocket return_socket = null;	
 		
 		while (true) {
