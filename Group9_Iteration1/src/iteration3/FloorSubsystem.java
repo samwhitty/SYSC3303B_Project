@@ -25,8 +25,6 @@ public class FloorSubsystem implements Runnable {
 	private static String direction;
 	private byte[] data;
 
-	
-
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendReceiveSocket;
 	
@@ -112,7 +110,7 @@ public class FloorSubsystem implements Runnable {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Client: Sending Packet:");
+		System.out.println("Floor: Sending Packet:");
 		System.out.println("To host: " + sendPacket.getAddress());
 		System.out.println("Destination host port: " + sendPacket.getPort());
 		int len = sendPacket.getLength();
@@ -141,7 +139,7 @@ public class FloorSubsystem implements Runnable {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Client: Reply received:");
+		System.out.println("Floor: Reply received:");
 		System.out.println("From host: " + receivePacket.getAddress());
 		System.out.println("Host port: " + receivePacket.getPort());
 		int len = receivePacket.getLength();
