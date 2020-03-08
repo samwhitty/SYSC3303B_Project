@@ -201,7 +201,13 @@ public class Scheduler extends Thread {
 		System.out.println();
 
 		byte[] receive = ("Received").getBytes();
-		DatagramPacket responsePacket = new DatagramPacket(receive, receive.length, packet.getAddress(), packet.getPort() );
+		DatagramPacket responsePacket;
+		if (packet.getPort() == 41) {
+			responsePacket = new DatagramPacket(receive, receive.length, packet.getAddress(), 69 );
+		} else {
+			responsePacket = new DatagramPacket(receive, receive.length, packet.getAddress(), 70 );
+		}
+		
 		
 		try {
 			sendSocket.send(responsePacket);
