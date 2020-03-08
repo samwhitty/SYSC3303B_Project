@@ -25,6 +25,7 @@ public class Scheduler extends Thread {
 	DatagramPacket sendPacket, f_receivePacket, e1_receivePacket, e2_receivePacket;
 	DatagramSocket sendSocket, e1_receiveSocket,e2_receiveSocket, f_receiveSocket, m_receiveSocket;
 	private static SchedulerState state;
+	boolean elevator1;
 	
 	/**
 	 * Constructor for the scheduler.
@@ -47,6 +48,7 @@ public class Scheduler extends Thread {
 			System.exit(1);
 		}
 		this.state = SchedulerState.WAITFORREQUEST;
+		elevator1 = true;
 	}
 	
 	
@@ -96,6 +98,7 @@ public class Scheduler extends Thread {
 		byte e2Floor = e2_receivePacket.getData()[0];
 		
 		if (Math.abs(requestedFloor - e1Floor) < Math.abs(requestedFloor - e2Floor)) {
+			elevator1 = true;
 			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), 69);
 			socket = e1_receiveSocket;
 			System.out.println("Sending Request to Elevator 1");
@@ -103,6 +106,7 @@ public class Scheduler extends Thread {
 			byte[] wait = ("Wait").getBytes();
 			otherPacket = new DatagramPacket(wait, wait.length, e2_receivePacket.getAddress(), 70 );
 		} else {
+			elevator1 = false;
 			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e2_receivePacket.getAddress(),70);
 			socket = e2_receiveSocket;
 			System.out.println("Sending Request to Elevator 2");
@@ -202,7 +206,7 @@ public class Scheduler extends Thread {
 
 		byte[] receive = ("Received").getBytes();
 		DatagramPacket responsePacket;
-		if (packet.getPort() == 41) {
+		if (elevator1) {
 			responsePacket = new DatagramPacket(receive, receive.length, packet.getAddress(), 69 );
 		} else {
 			responsePacket = new DatagramPacket(receive, receive.length, packet.getAddress(), 70 );
