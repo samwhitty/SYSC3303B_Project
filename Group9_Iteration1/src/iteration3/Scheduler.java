@@ -76,8 +76,8 @@ public class Scheduler extends Thread {
 	 * @param numElevators
 	 */
 	
-	public int selectElevator() {
-		int port;
+	public DatagramSocket selectElevator() {
+		DatagramSocket socket;
 		byte[] data1 = new byte[100];
 		byte[] data2 = new byte[100];
 		e1_receivePacket = new DatagramPacket(data1, data1.length);
@@ -96,11 +96,11 @@ public class Scheduler extends Thread {
 		
 		if (Math.abs(requestedFloor - e1Floor) < Math.abs(requestedFloor - e2Floor)) {
 			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), 69);
-			port = e1_receivePacket.getPort();
+			socket = e1_receiveSocket;
 			System.out.println("Sending Request to Elevator 1");
 		} else {
 			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(),70);
-			port = e2_receivePacket.getPort();
+			socket = e2_receiveSocket;
 			System.out.println("Sending Request to Elevator 2");
 		}
 		
@@ -110,7 +110,7 @@ public class Scheduler extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return port;
+		return socket;
 		
  	}
 	
@@ -271,17 +271,12 @@ public class Scheduler extends Thread {
 			//}
 
 			if (state == SchedulerState.DISPATCHELEVATOR) {
-				return_port = selectElevator();
+				return_socket = selectElevator();
 				state = SchedulerState.WAITFORELEVATOR;
 			}
 
 			if (state == SchedulerState.WAITFORELEVATOR) {
-				try {
-					return_socket = new DatagramSocket(return_port);
-				} catch (SocketException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
 				data = receiveElevatorData(return_socket);
 				this.sendDataToFloor(data);
 				state = SchedulerState.WAITFORREQUEST;	
