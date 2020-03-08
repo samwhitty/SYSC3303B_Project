@@ -78,6 +78,7 @@ public class Scheduler extends Thread {
 	
 	public DatagramSocket selectElevator() {
 		DatagramSocket socket;
+		DatagramPacket otherPacket;
 		byte[] data1 = new byte[100];
 		byte[] data2 = new byte[100];
 		e1_receivePacket = new DatagramPacket(data1, data1.length);
@@ -98,14 +99,22 @@ public class Scheduler extends Thread {
 			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), 69);
 			socket = e1_receiveSocket;
 			System.out.println("Sending Request to Elevator 1");
+			
+			byte[] wait = ("Wait").getBytes();
+			otherPacket = new DatagramPacket(wait, wait.length, e2_receivePacket.getAddress(), 70 );
 		} else {
-			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(),70);
+			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e2_receivePacket.getAddress(),70);
 			socket = e2_receiveSocket;
 			System.out.println("Sending Request to Elevator 2");
+			
+			byte[] wait = ("Wait").getBytes();
+			otherPacket = new DatagramPacket(wait, wait.length, e1_receivePacket.getAddress(), 69 );
 		}
+		
 		
 		try {
 			sendSocket.send(sendPacket);
+			sendSocket.send(otherPacket);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
