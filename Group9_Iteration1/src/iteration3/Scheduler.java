@@ -4,7 +4,6 @@
 package iteration3;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -17,7 +16,7 @@ import java.lang.*;
 import iteration3.SchedulerStateMachine.SchedulerState;
 
 /**
- * @author Samuel Whitty & Michael Evans
+ * @author Samuel Whitty & Michael Evans & Everett Soldaat
  * 
  */
 public class Scheduler extends Thread {
@@ -51,9 +50,7 @@ public class Scheduler extends Thread {
 		elevator1 = true;
 	}
 	
-	
 	 //Close both send and receiver sockets
-	
 	protected void tearDown() {
 		if (sendSocket != null) {
 			sendSocket.close();
@@ -63,8 +60,8 @@ public class Scheduler extends Thread {
 		f_receiveSocket.close();
 		e1_receiveSocket = null;
 		f_receiveSocket = null;
-
 	}
+	
 	public byte[] getData() {
 		return this.testData;
 	}
@@ -117,8 +114,7 @@ public class Scheduler extends Thread {
 			byte[] wait = ("Wait").getBytes();
 			otherPacket = new DatagramPacket(wait, wait.length, e1_receivePacket.getAddress(), 69 );
 		}
-		
-		
+		System.out.println();	
 		try {
 			sendSocket.send(sendPacket);
 			sendSocket.send(otherPacket);
@@ -126,8 +122,7 @@ public class Scheduler extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return socket;
-		
+		return socket;	
  	}
 	
 
@@ -144,7 +139,7 @@ public class Scheduler extends Thread {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Floor: Request received:");
+		System.out.println("Scheduler: New request received from Floor:");
 		System.out.println("From host: " + f_receivePacket.getAddress());
 		System.out.println("Host port: " + f_receivePacket.getPort());
 		int len = f_receivePacket.getLength();
@@ -168,7 +163,7 @@ public class Scheduler extends Thread {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Host: Sending Packet:");
+		System.out.println("Scheduler: Sending Packet to Floor:");
 		System.out.println("To host: " + sendPacket.getAddress());
 		System.out.println("Destination host port: " + sendPacket.getPort());
 		int len = sendPacket.getLength();
@@ -198,7 +193,7 @@ public class Scheduler extends Thread {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Client: Reply received:");
+		System.out.println("Scheduler: Reply received from Elevator:");
 		System.out.println("From host: " + packet.getAddress());
 		System.out.println("Host port: " + packet.getPort());
 		int len = packet.getLength();
@@ -238,7 +233,7 @@ public class Scheduler extends Thread {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Host: Sending Packet:");
+		System.out.println("Scheduler: Sending Packet to Elevator:");
 		System.out.println("To host: " + sendPacket.getAddress());
 		System.out.println("Destination host port: " + sendPacket.getPort());
 		int len = sendPacket.getLength();
@@ -262,16 +257,12 @@ public class Scheduler extends Thread {
 	public void run() {
 		System.out.println("Scheduler subsystem running.");
 		int return_port = 0;
-		DatagramSocket return_socket = null;
-		
+		DatagramSocket return_socket = null;	
 		
 		while (true) {
-			//this.receiveAndSend();
-			//if (!from_floor.isEmpty()) {
 				byte[] data = receiveFloorData();
 				
 				state = state.next(data);
-			//}
 
 			if (state == SchedulerState.DISPATCHELEVATOR) {
 				return_socket = selectElevator();
@@ -296,5 +287,4 @@ public class Scheduler extends Thread {
 		
 		new Thread(scheduler).start();
 	}
-
 }
