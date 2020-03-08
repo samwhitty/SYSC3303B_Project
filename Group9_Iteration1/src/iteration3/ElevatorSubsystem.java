@@ -23,6 +23,7 @@ public class ElevatorSubsystem implements Runnable {
 	private EState state;
 	private byte currentFloor;
 	private int schedulerPort;
+	private byte[] testData;
 	
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendSocket, receiveSocket; 
@@ -47,6 +48,9 @@ public class ElevatorSubsystem implements Runnable {
 	
 	public int getCurrentFloor() {
 		return currentFloor;
+	}
+	public byte[] getData() {
+		return this.testData;
 	}
 
 	/**
@@ -92,7 +96,7 @@ public class ElevatorSubsystem implements Runnable {
 		System.out.println("Containing: " + received);
 		System.out.println("Containing bytes: " + Arrays.toString(receivePacket.getData()));
 		System.out.println();
-		
+		testData = data;
 	}
 	/**
 	 * Sends data if possible, stops once it successfully sends data.

@@ -9,6 +9,7 @@ import java.util.concurrent.BlockingQueue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import iteration3.ElevatorSubsystem;
 import iteration3.FloorSubsystem;
@@ -48,7 +49,7 @@ public class SystemTest {
 		floor.sendRequest();
 		assertTrue("checks if floor in queue isn't empty", !from_floor.isEmpty());
 		scheduler.receiveFloorData();
-		scheduler.sendDataToElevator();
+		scheduler.sendDataToElevator(data);
 		assertTrue("checks if elevator receive queue isn't empty", !to_elevator.isEmpty());
 		elevator.receiveRequest();
 		elevator.sendRequest();
@@ -65,7 +66,7 @@ public class SystemTest {
 		sState = sState.next(data);
 		assertEquals("Checks if state has changed to DISPATCHELEVATOR", sState, SchedulerState.DISPATCHELEVATOR);
 		eState = eState.next(data);
-		assertEquals("Checks if state has changed to PICKUP", eState, EState.PICKUP);
+		assertEquals("Checks if state has changed to PICKUP", eState, EState.PICKDOWN);
 		eState = eState.next(data);
 		assertEquals("Checks if state has changed to LOADING", eState, EState.LOADING);
 		eState = eState.next(data);
@@ -75,7 +76,11 @@ public class SystemTest {
 		eState = eState.next(data);
 		assertEquals("Checks if state has changed to STOPPED", eState, EState.STOPPED);
 		data = eState.getData(data);
-		assertEquals("Checks is Elevator is on destination floor", (int) data[4], (int) data[3]);
+		int index = data.length -1;
+		while(data[index] ==0) {
+			index--;
+		}
+		assertEquals("Checks is Elevator is on destination floor", data[index], data[index-2]);
 	}
 	
 	

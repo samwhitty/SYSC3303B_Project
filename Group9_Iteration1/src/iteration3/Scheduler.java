@@ -25,8 +25,8 @@ public class Scheduler extends Thread {
 	DatagramPacket sendPacket, f_receivePacket, e1_receivePacket, e2_receivePacket;
 	DatagramSocket sendSocket, e1_receiveSocket,e2_receiveSocket, f_receiveSocket, m_receiveSocket;
 	private static SchedulerState state;
-	boolean elevator1;
-	
+	private boolean elevator1;
+	private byte[] testData = new byte[100];
 	/**
 	 * Constructor for the scheduler.
 	 * @param einQueue
@@ -64,6 +64,9 @@ public class Scheduler extends Thread {
 		e1_receiveSocket = null;
 		f_receiveSocket = null;
 
+	}
+	public byte[] getData() {
+		return this.testData;
 	}
 	 
 	/**
@@ -150,6 +153,7 @@ public class Scheduler extends Thread {
 		System.out.println("Containing: " + received);
 		System.out.println("Containing bytes: " + Arrays.toString(f_receivePacket.getData()));
 		System.out.println();
+		testData = data;
 		return f_receivePacket.getData();
 	}
 
@@ -251,37 +255,6 @@ public class Scheduler extends Thread {
 		}
 	}
 	
-	//No longer used
-	public void receiveAndSend() {
-		byte[] reply = new byte[100];
-		byte[] data = new byte[100];
-		byte[] request = new byte[100];
-		
-		f_receivePacket = new DatagramPacket(data, data.length);
-		this.receiveFloorData();
-		
-		reply = ("Request Received").getBytes();
-		this.sendDataToFloor(reply);
-		
-		f_receivePacket = new DatagramPacket(request, request.length);
-		//this.receiveElevatorData();
-		
-		this.sendDataToElevator(data);
-		
-		data = new byte[100];
-		
-		f_receivePacket = new DatagramPacket(data, data.length);
-		//this.receiveElevatorData();
-		
-		reply = ("Data Received").getBytes();
-		this.sendDataToElevator(reply);
-		
-		request = new byte[100];
-		f_receivePacket = new DatagramPacket(request, request.length);
-		this.receiveFloorData();
-		
-		this.sendDataToFloor(data);
-	}
 	/**
 	 * Runs the scheduler.
 	 */
@@ -296,6 +269,7 @@ public class Scheduler extends Thread {
 			//this.receiveAndSend();
 			//if (!from_floor.isEmpty()) {
 				byte[] data = receiveFloorData();
+				
 				state = state.next(data);
 			//}
 
