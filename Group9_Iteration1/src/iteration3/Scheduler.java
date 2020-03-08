@@ -200,6 +200,16 @@ public class Scheduler extends Thread {
 		System.out.println("Containing bytes: " + Arrays.toString(packet.getData()));
 		System.out.println();
 
+		byte[] receive = ("Received").getBytes();
+		DatagramPacket responsePacket = new DatagramPacket(receive, receive.length, packet.getAddress(), packet.getPort() );
+		
+		try {
+			sendSocket.send(responsePacket);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return packet.getData();
 	}
 
