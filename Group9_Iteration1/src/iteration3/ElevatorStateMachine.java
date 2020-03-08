@@ -106,7 +106,11 @@ public class ElevatorStateMachine {
 					indexP++;
 				}
 				indexP++;
-				indexD = indexP + 5;
+				indexD = data.length -1;
+				while(data[indexD] == 0) {
+					indexD--;
+				}
+				indexD -= 2;
 				int ftravel = (int) data[indexP] - (int) data[indexD];
 				if (ftravel > 1) {
 					travelTime += oneToTwo;
@@ -217,16 +221,13 @@ public class ElevatorStateMachine {
 				//time.setSec(travelTime);
 				//String newtime = time.toString();
 				//newData[0] = (TimeData) time;
-				int indexP = 0;
+				
 				int indexC = data.length -1;
-				while(data[indexP] != 0) {
-					indexP++;
-				}
-				indexP++;
+				
 				while(data[indexC] == 0) {
 					indexC--;
 				}
-				data[indexC] = data[indexP];
+				data[indexC] = data[indexC-2];
 				return data;
 			}
 		},;

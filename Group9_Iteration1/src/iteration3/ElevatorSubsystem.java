@@ -113,29 +113,42 @@ public class ElevatorSubsystem implements Runnable {
 			this.sendRequest();
 			
 			this.receiveRequest(data);
-			int index = data.length -1;
-			while(data[index] ==0) {
-				index--;
+			int index = 0;
+			byte[] wait = new byte[4];
+			while(index < 4) {
+				wait[index] = data[index];
+				index++;
 			}
-			index += 2;
-			data[index] = currentFloor;
-			
-			while(state != EState.STOPPED) {
-				state = state.next(data);
+			String reply = new String(wait, 0, wait.length);
+
+			if(reply.equals("Wait")) {
+				System.out.println(reply);
 			}
-			data = state.getData(data);
-			
-			currentFloor = data[index];
-			try {
-				sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), schedulerPort);
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			else {
+				index = data.length -1;
+				while(data[index] ==0) {
+					index--;
+				}
+				index += 2;
+				data[index] = currentFloor;
+				
+				while(state != EState.STOPPED) {
+					state = state.next(data);
+				}
+				data = state.getData(data);
+				
+				currentFloor = data[index];
+				try {
+					sendPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), schedulerPort);
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				this.sendRequest();
+				state = EState.WAITING;
+				r = new byte[100];
+				this.receiveRequest(r);
 			}
-			this.sendRequest();
-			state = EState.WAITING;
-			r = new byte[100];
-			this.receiveRequest(r);
 		}
 	}
 	
