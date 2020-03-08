@@ -78,6 +78,10 @@ public class Scheduler extends Thread {
 	
 	public DatagramSocket selectElevator() {
 		DatagramSocket socket;
+		byte[] data1 = new byte[100];
+		byte[] data2 = new byte[100];
+		e1_receivePacket = new DatagramPacket(data1, data1.length);
+		e2_receivePacket = new DatagramPacket(data2, data2.length);
 		
 		try {
 			e1_receiveSocket.receive(e1_receivePacket);
@@ -93,9 +97,11 @@ public class Scheduler extends Thread {
 		if (Math.abs(requestedFloor - e1Floor) < Math.abs(requestedFloor - e2Floor)) {
 			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), e1_receivePacket.getPort());
 			socket = e1_receiveSocket;
+			System.out.println("Sending Request to Elevator 1");
 		} else {
 			sendPacket = new DatagramPacket(f_receivePacket.getData(), f_receivePacket.getData().length, e1_receivePacket.getAddress(), e1_receivePacket.getPort());
 			socket = e2_receiveSocket;
+			System.out.println("Sending Request to Elevator 2");
 		}
 		
 		try {
@@ -114,13 +120,15 @@ public class Scheduler extends Thread {
 	 * queue.
 	 */
 	public synchronized byte[] receiveFloorData() {
+		byte[] data = new byte[100];
+		f_receivePacket = new DatagramPacket(data, data.length);
 		try {
 			f_receiveSocket.receive(f_receivePacket);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Client: Reply received:");
+		System.out.println("Floor: Request received:");
 		System.out.println("From host: " + f_receivePacket.getAddress());
 		System.out.println("Host port: " + f_receivePacket.getPort());
 		int len = f_receivePacket.getLength();
@@ -213,6 +221,8 @@ public class Scheduler extends Thread {
 			System.exit(1);
 		}
 	}
+	
+	//No longer used
 	public void receiveAndSend() {
 		byte[] reply = new byte[100];
 		byte[] data = new byte[100];
